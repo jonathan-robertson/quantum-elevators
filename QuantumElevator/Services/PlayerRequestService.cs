@@ -78,7 +78,7 @@ namespace QuantumElevator.Services {
                 return true; // blocks without tile entities (security class) will be allowed
             }
             var tileEntity = GameManager.Instance.World.GetTileEntity(GameManager.Instance.World.ChunkCache.ClusterIdx, blockPos) as TileEntitySign;
-            elevatorHasPassword = tileEntity.HasPassword();
+            elevatorHasPassword = tileEntity.HasPassword(); // TODO: fix Exception here!
             if (!tileEntity.IsLocked()) {
                 return true;
             }
@@ -112,10 +112,9 @@ namespace QuantumElevator.Services {
             for (blockPos.y += BlockHeight(blockValue); blockPos.y < 265; blockPos.y += BlockHeight(blockValue)) {
                 GetBaseBlockPositionAndValue(blockPos, out blockPos, out blockValue);
                 log.Debug($"checking {blockPos}");
-                if (blockValue.Block.blockID == QuantumBlockId) {
-                    log.Debug($"found the next elevator at {blockPos}");
-                    //MessagingSystem.Whisper($"Found quantum block at {blockPos}", player.entityId);
-                    return HasPermission(blockPos, blockValue.Block, internalId, out _); ;
+                if (blockValue.Block.blockID == QuantumBlockId && HasPermission(blockPos, blockValue.Block, internalId, out _)) {
+                    log.Debug($"found the next accessible elevator at {blockPos}");
+                    return true;
                 }
 
                 if (GameManager.Instance.World.IsOpenSkyAbove(clrId, blockPos.x, blockPos.y, blockPos.z)) {
@@ -158,9 +157,9 @@ namespace QuantumElevator.Services {
             for (blockPos.y--; blockPos.y > 0; blockPos.y--) {
                 GetBaseBlockPositionAndValue(blockPos, out blockPos, out blockValue);
                 log.Debug($"checking {blockPos}");
-                if (blockValue.Block.blockID == QuantumBlockId) {
-                    log.Debug($"found the next elevator at {blockPos}");
-                    return HasPermission(blockPos, blockValue.Block, internalId, out _);
+                if (blockValue.Block.blockID == QuantumBlockId && HasPermission(blockPos, blockValue.Block, internalId, out _)) {   
+                    log.Debug($"found the next accessible elevator at {blockPos}");
+                    return true;
                 }
             }
 

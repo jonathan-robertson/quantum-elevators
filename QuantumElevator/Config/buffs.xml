@@ -22,13 +22,13 @@
                 <!-- parent_transform="Spine1" local_offset="0,-.2,0" -->
                 <!--  shape_mesh="true" -->
                 <!-- parent_transform="LOD0" -->
-                <triggered_effect trigger="onSelfBuffStart" action="AttachParticleEffectToEntity" particle="RadiatedParticlesOnMesh" parent_transform="LOD0" shape_mesh="true" />
+                <!-- <triggered_effect trigger="onSelfBuffStart" action="AttachParticleEffectToEntity" particle="RadiatedParticlesOnMesh" parent_transform="LOD0" shape_mesh="true" />
                 <triggered_effect trigger="onSelfDied" action="RemoveParticleEffectFromEntity" particle="RadiatedParticlesOnMesh" />
                 <triggered_effect trigger="onSelfBuffFinish" action="RemoveParticleEffectFromEntity" particle="RadiatedParticlesOnMesh" />
                 <triggered_effect trigger="onSelfBuffRemove" action="RemoveParticleEffectFromEntity" particle="RadiatedParticlesOnMesh" />
-                <triggered_effect trigger="onSelfLeaveGame" action="RemoveParticleEffectFromEntity" particle="RadiatedParticlesOnMesh" />
+                <triggered_effect trigger="onSelfLeaveGame" action="RemoveParticleEffectFromEntity" particle="RadiatedParticlesOnMesh" /> -->
 
-                <triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="solarpanel_on" />
+                <!-- <triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="solarpanel_on" /> -->
                 <triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="solarpanel_idle" />
                 <triggered_effect trigger="onSelfBuffRemove" action="PlaySound" sound="solarpanel_off" />
                 <triggered_effect trigger="onSelfBuffRemove" action="FadeOutSound" sound="solarpanel_idle" />
@@ -39,7 +39,7 @@
         </buff>
 
         <buff name="notifyQuantumElevatorLocked">
-            <duration value="5.5" />
+            <duration value="6" />
             <stack_type value="ignore" />
             <effect_group>
                 <triggered_effect trigger="onSelfBuffStart" action="ShowToolbeltMessage" message_key="notifyQuantumElevatorLockedTooltip" sound="locked" />
@@ -47,7 +47,8 @@
         </buff>
 
         <buff name="notifyQuantumElevatorLockedWithPassword">
-            <duration value="5.5" />
+            <!-- 5.5 was pretty great :) -->
+            <duration value="6" />
             <stack_type value="ignore" />
             <effect_group>
                 <triggered_effect trigger="onSelfBuffStart" action="ShowToolbeltMessage" message_key="notifyQuantumElevatorLockedWithPasswordTooltip" sound="locked" />
@@ -55,7 +56,8 @@
         </buff>
 
         <buff name="triggerQuantumJump">
-            <duration value="1" />
+            <duration value="2" />
+            <stack_type value="replace" />
             <!-- <update_rate value=".1" /> -->
             <effect_group>
                 <!-- <triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="breakleg" />
@@ -67,20 +69,23 @@
 
                 <!-- parent_transform="Spine1" local_offset="0,-.2,0" -->
                 <!-- shape_mesh="true" -->
-                <triggered_effect trigger="onSelfBuffStart" action="AttachParticleEffectToEntity" particle="p_electric_shock" parent_transform="Spine1" local_offset="0,-.2,0" />
+                <!-- <triggered_effect trigger="onSelfBuffStart" action="AttachParticleEffectToEntity" particle="p_electric_shock" parent_transform="Spine1" local_offset="0,-.2,0" />
                 <triggered_effect trigger="onSelfDied" action="RemoveParticleEffectFromEntity" particle="p_electric_shock" />
                 <triggered_effect trigger="onSelfBuffFinish" action="RemoveParticleEffectFromEntity" particle="p_electric_shock" />
                 <triggered_effect trigger="onSelfBuffRemove" action="RemoveParticleEffectFromEntity" particle="p_electric_shock" />
-                <triggered_effect trigger="onSelfLeaveGame" action="RemoveParticleEffectFromEntity" particle="p_electric_shock" />
+                <triggered_effect trigger="onSelfLeaveGame" action="RemoveParticleEffectFromEntity" particle="p_electric_shock" /> -->
 
                 <!-- local_offset="0,-.2,0" -->
                 <!-- shape_mesh="true" -->
                 <!-- AttachParticleEffectToEntity		target, particle, parent_transform, local_offset, local_rotation -->
-                <!-- <triggered_effect trigger="onSelfBuffStart" action="AttachParticleEffectToEntity" particle="RadiatedParticlesOnMesh" parent_transform="LOD0" shape_mesh="true" />
+                <triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="solarpanel_on" />
+                <triggered_effect trigger="onSelfBuffStack" action="PlaySound" sound="solarpanel_on" />
+
+                <triggered_effect trigger="onSelfBuffStart" action="AttachParticleEffectToEntity" particle="RadiatedParticlesOnMesh" parent_transform="LOD0" shape_mesh="true" />
                 <triggered_effect trigger="onSelfDied" action="RemoveParticleEffectFromEntity" particle="RadiatedParticlesOnMesh" />
                 <triggered_effect trigger="onSelfBuffFinish" action="RemoveParticleEffectFromEntity" particle="RadiatedParticlesOnMesh" />
                 <triggered_effect trigger="onSelfBuffRemove" action="RemoveParticleEffectFromEntity" particle="RadiatedParticlesOnMesh" />
-                <triggered_effect trigger="onSelfLeaveGame" action="RemoveParticleEffectFromEntity" particle="RadiatedParticlesOnMesh" /> -->
+                <triggered_effect trigger="onSelfLeaveGame" action="RemoveParticleEffectFromEntity" particle="RadiatedParticlesOnMesh" />
 
                 <!-- <triggered_effect trigger="onSelfBuffStart" action="AttachParticleEffectToEntity" particle="p_big_smoke" parent_transform="Spine1" local_offset="0,-.2,0" />
                 <triggered_effect trigger="onSelfDied" action="RemoveParticleEffectFromEntity" particle="p_big_smoke" />
