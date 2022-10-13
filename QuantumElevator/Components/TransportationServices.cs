@@ -2,12 +2,20 @@
 using System;
 using System.Collections.Generic;
 
-namespace QuantumElevator.Services {
-    internal class PlayerRequestService {
-        private static readonly ModLog log = new ModLog(typeof(PlayerRequestService));
+namespace QuantumElevator.Components {
+    internal class TransportationServices {
+        private static readonly ModLog log = new ModLog(typeof(TransportationServices));
         private static int counter = 0;
         private static readonly List<EntityPlayer> players = GameManager.Instance.World.Players.list;
-        public static int QuantumBlockId { get; set; } = 0;
+        public static int QuantumBlockId { get; set; } = 0; // TODO: reduce access, maybe move to another component
+
+        internal static void OnGameStartDone() {
+            try {
+                QuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlock");
+            } catch (Exception e) {
+                log.Error("Error OnGameStartDone", e);
+            }
+        }
 
         internal static void OnGameUpdate() {
             try {
@@ -18,7 +26,7 @@ namespace QuantumElevator.Services {
                 counter = 0;
                 CyclePlayers();
             } catch (Exception e) {
-                log.Error("Failed OnGameUpdate", e);
+                log.Error("Error OnGameUpdate", e);
             }
         }
 
@@ -30,36 +38,32 @@ namespace QuantumElevator.Services {
         }
 
         private static void HandleViewControls(EntityPlayer player) {
-            if (player.Buffs.HasBuff("inQuantumElevator")) {
-                var angle = CheckAngle(player);
+            if (!player.Buffs.HasBuff("inQuantumElevator")) {
+                return;
+            }
 
-                //MessagingSystem.Whisper($"{player.rotation}", player.entityId);
 
-                var clientInfo = ConnectionManager.Instance.Clients.ForEntityId(player.entityId);
-                if (clientInfo == null) {
+            var clientInfo = ConnectionManager.Instance.Clients.ForEntityId(player.entityId);
+            if (clientInfo == null) {
+                return;
+            }
+
+            // TODO: get parent block now and walk down/up based on that
+            // TODO: reduce frequency check and confirm player is still on block before executing teleport
+            var angle = CheckAngle(player);
+            switch (angle) {
+                case 1:
+                    if (TryGetFloorAbove(player, clientInfo.InternalId, out var elevatorAbovePos)) {
+                        Teleport(player, clientInfo, elevatorAbovePos);
+                    }
                     return;
-                }
-
-                // TODO: get parent block now and walk down/up based on that
-                // TODO: reduce frequency check and confirm player is still on block before executing teleport
-                switch (angle) {
-                    case 1:
-                        //MessagingSystem.Whisper($"^ Check for Elevator Above", player.entityId);
-                        if (TryGetFloorAbove(player, clientInfo.InternalId, out var elevatorAbovePos)) {
-                            //MessagingSystem.Whisper($"++ Teleporting to floor above", player.entityId);
-                            Teleport(player, clientInfo, elevatorAbovePos);
-                        }
-                        return;
-                    case -1:
-                        //MessagingSystem.Whisper($"V Check for Elevator Below", player.entityId);
-                        if (TryGetFloorBelow(player, clientInfo.InternalId, out var elevatorBelowPos)) {
-                            //MessagingSystem.Whisper($"++ Teleporting to floor below", player.entityId);
-                            Teleport(player, clientInfo, elevatorBelowPos);
-                        }
-                        return;
-                    case 0:
-                        return;
-                }
+                case -1:
+                    if (TryGetFloorBelow(player, clientInfo.InternalId, out var elevatorBelowPos)) {
+                        Teleport(player, clientInfo, elevatorBelowPos);
+                    }
+                    return;
+                case 0:
+                    return;
             }
         }
 
@@ -77,12 +81,15 @@ namespace QuantumElevator.Services {
                 elevatorHasPassword = false;
                 return true; // blocks without tile entities (security class) will be allowed
             }
-            var tileEntity = GameManager.Instance.World.GetTileEntity(GameManager.Instance.World.ChunkCache.ClusterIdx, blockPos) as TileEntitySign;
-            elevatorHasPassword = tileEntity.HasPassword(); // TODO: fix Exception here!
-            if (!tileEntity.IsLocked()) {
+            if (!(GameManager.Instance.World.GetTileEntity(GameManager.Instance.World.ChunkCache.ClusterIdx, blockPos) is ILockable lockable)) {
+                elevatorHasPassword = false;
                 return true;
             }
-            return tileEntity.IsUserAllowed(internalId);
+            elevatorHasPassword = lockable.HasPassword();
+            if (!lockable.IsLocked()) {
+                return true;
+            }
+            return lockable.IsUserAllowed(internalId);
         }
 
         private static void HandleLockedOut(EntityPlayer player, bool elevatorHasPassword) {
@@ -157,7 +164,7 @@ namespace QuantumElevator.Services {
             for (blockPos.y--; blockPos.y > 0; blockPos.y--) {
                 GetBaseBlockPositionAndValue(blockPos, out blockPos, out blockValue);
                 log.Debug($"checking {blockPos}");
-                if (blockValue.Block.blockID == QuantumBlockId && HasPermission(blockPos, blockValue.Block, internalId, out _)) {   
+                if (blockValue.Block.blockID == QuantumBlockId && HasPermission(blockPos, blockValue.Block, internalId, out _)) {
                     log.Debug($"found the next accessible elevator at {blockPos}");
                     return true;
                 }
@@ -169,6 +176,15 @@ namespace QuantumElevator.Services {
         }
 
         private static void GetBaseBlockPositionAndValue(Vector3i pos, out Vector3i blockPosition, out BlockValue blockValue) {
+            // TODO: found this in BlockPlayerSign.OnBlockActivated, so it seems this is the established pattern
+            /*
+            if (_blockValue.ischild) {
+                Vector3i parentPos = _blockValue.Block.multiBlockPos.GetParentPos(_blockPos, _blockValue);
+                BlockValue block = _world.GetBlock(parentPos);
+                return this.OnBlockActivated(_indexInBlockActivationCommands, _world, _cIdx, parentPos, block, _player);
+            }
+            */
+
             log.Debug($"Checking block at position {pos}");
             blockValue = GameManager.Instance.World.ChunkCache.GetBlock(pos);
             if (blockValue.Block.isMultiBlock && blockValue.ischild) {
