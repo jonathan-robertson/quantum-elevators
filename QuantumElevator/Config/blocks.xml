@@ -76,8 +76,11 @@
             <property name="CreativeMode" value="Player" />
             <property name="ImposterDontBlock" value="true" />
             <property name="StabilitySupport" value="false" />
-            <property name="IsTerrainDecoration" value="false" />
+            <!-- TODO: set this to false? -->
+            <property name="IsTerrainDecoration" value="true" />
             <property name="OnlySimpleRotations" value="true" />
+
+            <!-- <property name="DisplayType" value="blockMulti" /> -->
 
             <property name="BuffsWhenWalkedOn" value="triggerQuantumElevator" />
             <!-- 
