@@ -1,0 +1,7 @@
+﻿Key,File,Type,english
+quantumElevatorBlock,blocks,Block,"Quantum Elevator"
+quantumElevatorBlockDesc,blocks,Block,"TODO"
+quantumElevatorBlockTip,Journal Tip,,"TODO"
+quantumElevatorBlockTip_title,Journal Tip,,"Quantum Elevator"
+notifyQuantumElevatorLockedTooltip,buffs,Buff,"This Quantum Elevator is [ff8000]locked[ffffff]; get in touch with the owner."
+notifyQuantumElevatorLockedWithPasswordTooltip,buffs,Buff,"This Quantum Elevator is [ff8000]locked and requires a password[ffffff]."

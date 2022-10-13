@@ -7,4 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.0] - ?
 
-- TODO
+- add elevator 'look' controls
+- add locks/passwords to elevator
+- add notifications for locked elevator use
+- add particle effects when on elevator
+- add quantum elevator block
