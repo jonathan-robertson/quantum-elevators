@@ -38,7 +38,7 @@
         </buff>
 
         <buff name="notifyQuantumElevatorLocked">
-            <duration value="6" />
+            <duration value="5.5" />
             <stack_type value="ignore" />
             <effect_group>
                 <triggered_effect trigger="onSelfBuffStart" action="ShowToolbeltMessage" message_key="notifyQuantumElevatorLockedTooltip" sound="locked" />
@@ -46,8 +46,7 @@
         </buff>
 
         <buff name="notifyQuantumElevatorLockedWithPassword">
-            <!-- 5.5 was pretty great :) -->
-            <duration value="6" />
+            <duration value="5.5" />
             <stack_type value="ignore" />
             <effect_group>
                 <triggered_effect trigger="onSelfBuffStart" action="ShowToolbeltMessage" message_key="notifyQuantumElevatorLockedWithPasswordTooltip" sound="locked" />
