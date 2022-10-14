@@ -7,11 +7,13 @@ namespace QuantumElevator.Components {
         private static readonly ModLog log = new ModLog(typeof(TransportationServices));
         private static int counter = 0;
         private static readonly List<EntityPlayer> players = GameManager.Instance.World.Players.list;
-        public static int QuantumBlockId { get; set; } = 0; // TODO: reduce access, maybe move to another component
+        public static int SecureQuantumBlockId { get; set; } = 0; // TODO: reduce access, maybe move to another component
+        public static int PortableQuantumBlockId { get; set; } = 0; // TODO: reduce access, maybe move to another component
 
         internal static void OnGameStartDone() {
             try {
-                QuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlock");
+                SecureQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockSecure");
+                PortableQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockPortable");
             } catch (Exception e) {
                 log.Error("Error OnGameStartDone", e);
             }
@@ -74,7 +76,13 @@ namespace QuantumElevator.Components {
 
         private static bool CanAccess(EntityPlayer player, PlatformUserIdentifierAbs internalId, out Vector3i blockPos, out BlockValue blockValue, out TileEntitySign secureTileEntity) {
             blockValue = GetBaseBlockPositionAndValue(player.GetBlockPosition(), out blockPos);
-            if (blockValue.Block.blockID != QuantumBlockId) {
+
+            if (PortableQuantumBlockId == blockValue.Block.blockID) {
+                secureTileEntity = null;
+                return true;
+            }
+
+            if (SecureQuantumBlockId != blockValue.Block.blockID) {
                 secureTileEntity = null;
                 return false;
             }
@@ -184,7 +192,11 @@ target.pass:{target.GetPassword()}");
                 targetBlockValue = GetBaseBlockPositionAndValue(targetPos, out targetPos);
                 log.Debug($"now checking {targetPos}");
 
-                if (targetBlockValue.Block.blockID != QuantumBlockId) {
+                if (PortableQuantumBlockId == targetBlockValue.Block.blockID) {
+                    return true;
+                }
+
+                if (SecureQuantumBlockId != targetBlockValue.Block.blockID) {
                     if (GameManager.Instance.World.IsOpenSkyAbove(clrId, targetPos.x, targetPos.y, targetPos.z)) {
                         log.Debug($"open sky above {targetPos}; abandoning above check");
                         return false;
@@ -208,9 +220,13 @@ target.pass:{target.GetPassword()}");
             // TODO: confirm if 0 is the right place to stop
             for (targetPos.y--; targetPos.y > 0; targetPos.y--) {
                 var targetBlockValue = GetBaseBlockPositionAndValue(targetPos, out targetPos);
-                log.Debug($"checking {targetPos}");
+                log.Debug($"checking {targetPos} ({Block.nameIdMapping.GetNameForId(targetBlockValue.Block.blockID)})");
 
-                if (targetBlockValue.Block.blockID == QuantumBlockId
+                if (PortableQuantumBlockId == targetBlockValue.Block.blockID) {
+                    return true;
+                }
+
+                if (SecureQuantumBlockId == targetBlockValue.Block.blockID
                     && CanAccess(internalId, source, GetTileEntitySignAt(targetPos))) {
                     log.Debug($"found the next accessible elevator at {targetPos}");
                     return true;
