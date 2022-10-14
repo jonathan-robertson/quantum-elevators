@@ -42,29 +42,25 @@ namespace QuantumElevator.Components {
                 return;
             }
 
-
-            var clientInfo = ConnectionManager.Instance.Clients.ForEntityId(player.entityId);
-            if (clientInfo == null) {
-                return;
-            }
-
             // TODO: get parent block now and walk down/up based on that
             // TODO: reduce frequency check and confirm player is still on block before executing teleport
             var angle = CheckAngle(player);
-            switch (angle) {
-                case 1:
-                    if (TryGetFloorAbove(player, clientInfo.InternalId, out var elevatorAbovePos)) {
-                        Teleport(player, clientInfo, elevatorAbovePos);
-                    }
-                    return;
-                case -1:
-                    if (TryGetFloorBelow(player, clientInfo.InternalId, out var elevatorBelowPos)) {
-                        Teleport(player, clientInfo, elevatorBelowPos);
-                    }
-                    return;
-                case 0:
-                    return;
+            if (angle == 0) {
+                return;
             }
+            if (TryGetClientInfo(player.entityId, out var clientInfo)
+                && CanAccess(player, clientInfo.InternalId, out var sourcePos, out var sourceBlockValue, out var sourceTileEntity)
+                && (angle > 0
+                    ? TryGetFloorAbove(sourcePos, sourceBlockValue, sourceTileEntity, clientInfo.InternalId, out Vector3i destination)
+                    : TryGetFloorBelow(sourcePos, sourceTileEntity, clientInfo.InternalId, out destination)
+                    )) {
+                Teleport(player, clientInfo, destination);
+            }
+        }
+
+        private static bool TryGetClientInfo(int entityId, out ClientInfo clientInfo) {
+            clientInfo = ConnectionManager.Instance.Clients.ForEntityId(entityId);
+            return clientInfo != null;
         }
 
         private static int CheckAngle(EntityPlayer player) {
@@ -74,6 +70,22 @@ namespace QuantumElevator.Components {
                 return -1;
             }
             return 0;
+        }
+
+        private static bool CanAccess(EntityPlayer player, PlatformUserIdentifierAbs internalId, out Vector3i blockPos, out BlockValue blockValue, out TileEntitySign secureTileEntity) {
+            blockValue = GetBaseBlockPositionAndValue(player.GetBlockPosition(), out blockPos);
+            if (blockValue.Block.blockID != QuantumBlockId) {
+                secureTileEntity = null;
+                return false;
+            }
+
+            secureTileEntity = GetTileEntitySignAt(blockPos);
+            if (!CanAccess(internalId, secureTileEntity, out var elevatorHasPassword)) {
+                HandleLockedOut(player, elevatorHasPassword);
+                return false;
+            }
+
+            return true;
         }
 
         private static bool HasPermission(Vector3i blockPos, Block block, PlatformUserIdentifierAbs internalId, out bool elevatorHasPassword) {
@@ -92,6 +104,52 @@ namespace QuantumElevator.Components {
             return lockable.IsUserAllowed(internalId);
         }
 
+        private static TileEntitySign GetTileEntitySignAt(Vector3i pos) {
+            return GameManager.Instance.World.GetTileEntity(GameManager.Instance.World.ChunkCache.ClusterIdx, pos) as TileEntitySign;
+        }
+
+        /**
+         * <summary>Confirm if player has permission to the given secure TileEntity.</summary>
+         * <param name="internalId">Platform identifier representing the player trying to confirm access.</param>
+         * <param name="secureTileEntity">Secure TileEntity user is trying to confirm access to.</param>
+         * <param name="hasPassword">Whether the secure TileEntity has a password set.</param>
+         * <returns>Whether player has permission to the given secure TileEntity.</returns>
+         */
+        private static bool CanAccess(PlatformUserIdentifierAbs internalId, TileEntitySign secureTileEntity, out bool hasPassword) {
+            if (secureTileEntity == null) {
+                hasPassword = false;
+                return true;
+            }
+            hasPassword = secureTileEntity.HasPassword();
+            return !secureTileEntity.IsLocked() || secureTileEntity.IsUserAllowed(internalId);
+        }
+
+        /**
+         * <summary>Confirm if player has permission to the given target.</summary>
+         * <param name="internalId">Platform identifier representing the player trying to confirm access.</param>
+         * <param name="source">Source Secure TileEntity used as an opportunistic key for target.</param>
+         * <param name="target">Target Secure TileEntity user is trying to confirm access to.</param>
+         * <returns>Whether player has permission to the given target.</returns>
+         */
+        private static bool CanAccess(PlatformUserIdentifierAbs internalId, TileEntitySign source, TileEntitySign target) {
+            if (CanAccess(internalId, target, out bool targetHasPassword)) {
+                return true;
+            } // target is locked and player doesn't have access
+            if (!targetHasPassword
+                || source == null
+                || !source.IsLocked()
+                || !source.HasPassword()) {
+                return false;
+            } // source and target have passwords, source is locked
+            if (source.GetOwner() == target.GetOwner()
+                && source.GetPassword() == target.GetPassword()) {
+                target.GetUsers().Add(internalId); // dynamically register this user to target!
+                target.SetModified();
+                return true;
+            } // source/target owners or passwords don't match
+            return false;
+        }
+
         private static void HandleLockedOut(EntityPlayer player, bool elevatorHasPassword) {
             if (elevatorHasPassword && !player.Buffs.HasBuff("notifyQuantumElevatorLockedWithPassword")) {
                 player.Buffs.AddBuff("notifyQuantumElevatorLockedWithPassword");
@@ -101,39 +159,67 @@ namespace QuantumElevator.Components {
             }
         }
 
-        private static bool TryGetFloorAbove(EntityPlayer player, PlatformUserIdentifierAbs internalId, out Vector3i blockPos) {
-            GetBaseBlockPositionAndValue(player.GetBlockPosition(), out blockPos, out var blockValue);
-            if (blockValue.Block.blockID != QuantumBlockId) {
-                return false;
-            } else if (!HasPermission(blockPos, blockValue.Block, internalId, out var elevatorHasPassword)) {
-                HandleLockedOut(player, elevatorHasPassword);
-                return false;
-            }
-            log.Debug($"current block found to be at {blockPos}");
-            // var blockValue = GameManager.Instance.World.GetBlock(playerBlockPos);
-
-            //GameManager.Instance.World.ChunkCache.ChunkProvider.GetWorldSize()
-            //GameManager.Instance.World.ChunkCache.chunks
+        private static bool TryGetFloorAbove(Vector3i sourcePos, BlockValue sourceBlockValue, TileEntitySign source, PlatformUserIdentifierAbs internalId, out Vector3i targetPos) {
+            log.Debug("calling TryGetFloorAbove");
+            targetPos = sourcePos;
             var clrId = GameManager.Instance.World.ChunkCache.ClusterIdx;
-            // TODO: confirm if 256 is the right place to stop
-            for (blockPos.y += BlockHeight(blockValue); blockPos.y < 265; blockPos.y += BlockHeight(blockValue)) {
-                GetBaseBlockPositionAndValue(blockPos, out blockPos, out blockValue);
-                log.Debug($"checking {blockPos}");
-                if (blockValue.Block.blockID == QuantumBlockId && HasPermission(blockPos, blockValue.Block, internalId, out _)) {
-                    log.Debug($"found the next accessible elevator at {blockPos}");
+            // confirm if 256 is the right place to stop
+
+            log.Debug($"planning to look above, starting at {targetPos}");
+            BlockValue targetBlockValue;
+            for (targetPos.y += BlockHeight(sourceBlockValue); targetPos.y < 256; targetPos.y += BlockHeight(targetBlockValue)) {
+                targetBlockValue = GetBaseBlockPositionAndValue(targetPos, out targetPos);
+                log.Debug($"now checking {targetPos}");
+
+                if (targetBlockValue.Block.blockID == QuantumBlockId
+                    && CanAccess(internalId, source, GetTileEntitySignAt(targetPos))) {
+                    log.Debug($"found the next accessible elevator at {targetPos}");
                     return true;
                 }
 
-                if (GameManager.Instance.World.IsOpenSkyAbove(clrId, blockPos.x, blockPos.y, blockPos.z)) {
-                    //MessagingSystem.Whisper("above is open sky; aborting check early", player.entityId);
-                    log.Debug($"open sky above {blockPos}; abandoning above check");
+                if (GameManager.Instance.World.IsOpenSkyAbove(clrId, targetPos.x, targetPos.y, targetPos.z)) {
+                    log.Debug($"open sky above {targetPos}; abandoning above check");
                     return false;
                 }
             }
 
-            //MessagingSystem.Whisper($"No quantum block found at {playerBlockPos}", player.entityId);
-            log.Debug($"no elevator was found above");
+            log.Debug($"no elevator was found below");
             return false;
+        }
+
+        private static bool TryGetFloorBelow(Vector3i sourcePos, TileEntitySign source, PlatformUserIdentifierAbs internalId, out Vector3i targetPos) {
+            log.Debug("calling TryGetFloorBelow");
+            targetPos = sourcePos;
+            // TODO: confirm if 0 is the right place to stop
+            for (targetPos.y--; targetPos.y > 0; targetPos.y--) {
+                var targetBlockValue = GetBaseBlockPositionAndValue(targetPos, out targetPos);
+                log.Debug($"checking {targetPos}");
+
+                if (targetBlockValue.Block.blockID == QuantumBlockId
+                    && CanAccess(internalId, source, GetTileEntitySignAt(targetPos))) {
+                    log.Debug($"found the next accessible elevator at {targetPos}");
+                    return true;
+                }
+            }
+
+            log.Debug($"no elevator was found below");
+            return false;
+        }
+
+        private static BlockValue GetBaseBlockPositionAndValue(Vector3i pos, out Vector3i blockPosition) {
+            blockPosition = pos;
+            log.Debug($"GetBaseBlockPositionAndValue at position {pos}");
+            var blockValue = GameManager.Instance.World.ChunkCache.GetBlock(pos);
+            if (blockValue.ischild) {
+                log.Debug($"Block found is a multi-block; self: {blockValue}, isChild? {blockValue.ischild}, parent: {blockValue.parent}");
+                log.Debug($">> parentY: {blockValue.parenty}");
+                blockPosition.y += blockValue.parenty;
+                // NOTE: block value will be the same; leaving note here in case we ever find a way to make compound blocks
+                // blockValue = GameManager.Instance.World.GetBlock(blockPosition);
+            } else {
+                log.Debug($"Block found is not a multi-block; self: {blockValue}, isChild? {blockValue.ischild}");
+            }
+            return blockValue;
         }
 
         private static int BlockHeight(BlockValue blockValue) {
@@ -143,59 +229,6 @@ namespace QuantumElevator.Components {
             }
             log.Debug($"height of focused block is 1");
             return 1;
-        }
-
-        private static bool TryGetFloorBelow(EntityPlayer player, PlatformUserIdentifierAbs internalId, out Vector3i blockPos) {
-            GetBaseBlockPositionAndValue(player.GetBlockPosition(), out blockPos, out var blockValue);
-            if (blockValue.Block.blockID != QuantumBlockId) {
-                return false;
-            } else if (!HasPermission(blockPos, blockValue.Block, internalId, out var elevatorHasPassword)) {
-                HandleLockedOut(player, elevatorHasPassword);
-                return false;
-            }
-            log.Debug($"current block found to be at {blockPos}");
-            // var blockValue = GameManager.Instance.World.GetBlock(playerBlockPos);
-
-            //GameManager.Instance.World.ChunkCache.ChunkProvider.GetWorldSize()
-            //GameManager.Instance.World.ChunkCache.chunks
-            //var clrId = GameManager.Instance.World.ChunkCache.ClusterIdx;
-            // TODO: confirm if -2 is the right place to start (using this to avoid top part of a block teleporting to same block on fall)
-            // TODO: confirm if 0 is the right place to stop
-            for (blockPos.y--; blockPos.y > 0; blockPos.y--) {
-                GetBaseBlockPositionAndValue(blockPos, out blockPos, out blockValue);
-                log.Debug($"checking {blockPos}");
-                if (blockValue.Block.blockID == QuantumBlockId && HasPermission(blockPos, blockValue.Block, internalId, out _)) {
-                    log.Debug($"found the next accessible elevator at {blockPos}");
-                    return true;
-                }
-            }
-
-            //MessagingSystem.Whisper($"No quantum block found at {playerBlockPos}", player.entityId);
-            log.Debug($"no elevator was found below");
-            return false;
-        }
-
-        private static void GetBaseBlockPositionAndValue(Vector3i pos, out Vector3i blockPosition, out BlockValue blockValue) {
-            // TODO: found this in BlockPlayerSign.OnBlockActivated, so it seems this is the established pattern
-            /*
-            if (_blockValue.ischild) {
-                Vector3i parentPos = _blockValue.Block.multiBlockPos.GetParentPos(_blockPos, _blockValue);
-                BlockValue block = _world.GetBlock(parentPos);
-                return this.OnBlockActivated(_indexInBlockActivationCommands, _world, _cIdx, parentPos, block, _player);
-            }
-            */
-
-            log.Debug($"Checking block at position {pos}");
-            blockValue = GameManager.Instance.World.ChunkCache.GetBlock(pos);
-            if (blockValue.Block.isMultiBlock && blockValue.ischild) {
-                log.Debug($"Block found is a multi-block; self: {blockValue}, isChild? {blockValue.ischild}, parent: {blockValue.parent}");
-                log.Debug($">> parentY: {blockValue.parenty}");
-                blockPosition = pos;
-                blockPosition.y += blockValue.parenty;
-            } else {
-                log.Debug($"Block found is not a multi-block; self: {blockValue}, isChild? {blockValue.ischild}");
-                blockPosition = pos;
-            }
         }
 
         private static void Teleport(EntityPlayer player, ClientInfo clientInfo, Vector3i elevatorPos) {
