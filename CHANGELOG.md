@@ -10,5 +10,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - add elevator 'look' controls
 - add locks/passwords to elevator
 - add notifications for locked elevator use
+- add on-demand password chaining
 - add particle effects when on elevator
 - add quantum elevator block

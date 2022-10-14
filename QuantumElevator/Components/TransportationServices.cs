@@ -139,14 +139,27 @@ namespace QuantumElevator.Components {
                 || source == null
                 || !source.IsLocked()
                 || !source.HasPassword()) {
+                log.Debug($"CANNOT ACCESS because: !targetHasPassword ({!targetHasPassword}) || source == null({source == null}) || !source.IsLocked()({!source.IsLocked()}) || !source.HasPassword()({!source.HasPassword()})");
                 return false;
             } // source and target have passwords, source is locked
-            if (source.GetOwner() == target.GetOwner()
-                && source.GetPassword() == target.GetPassword()) {
+            if (source.GetOwner().Equals(target.GetOwner())
+                && source.GetPassword().Equals(target.GetPassword())) {
+                log.Debug($"CAN ACCESS because: source.GetOwner() == target.GetOwner()({source.GetOwner() == target.GetOwner()}) && source.GetPassword() == target.GetPassword()({source.GetPassword() == target.GetPassword()})");
                 target.GetUsers().Add(internalId); // dynamically register this user to target!
                 target.SetModified();
                 return true;
-            } // source/target owners or passwords don't match
+            } // source/target owners or passwords don't match=
+            log.Debug($@"CANNOT ACCESS because: source.GetOwner() != target.GetOwner() || source.GetPassword() != target.GetPassword()
+source.owner:
+    CombinedString:{source.GetOwner().CombinedString}
+    PlatformIdentifierString:{source.GetOwner().PlatformIdentifierString}
+    ReadablePlatformUserIdentifier:{source.GetOwner().ReadablePlatformUserIdentifier}
+target.owner:
+    CombinedString:{target.GetOwner().CombinedString}
+    PlatformIdentifierString:{target.GetOwner().PlatformIdentifierString}
+    ReadablePlatformUserIdentifier:{target.GetOwner().ReadablePlatformUserIdentifier}
+source.pass:{source.GetPassword()}
+target.pass:{target.GetPassword()}");
             return false;
         }
 
@@ -171,15 +184,17 @@ namespace QuantumElevator.Components {
                 targetBlockValue = GetBaseBlockPositionAndValue(targetPos, out targetPos);
                 log.Debug($"now checking {targetPos}");
 
-                if (targetBlockValue.Block.blockID == QuantumBlockId
-                    && CanAccess(internalId, source, GetTileEntitySignAt(targetPos))) {
-                    log.Debug($"found the next accessible elevator at {targetPos}");
-                    return true;
+                if (targetBlockValue.Block.blockID != QuantumBlockId) {
+                    if (GameManager.Instance.World.IsOpenSkyAbove(clrId, targetPos.x, targetPos.y, targetPos.z)) {
+                        log.Debug($"open sky above {targetPos}; abandoning above check");
+                        return false;
+                    }
+                    continue;
                 }
 
-                if (GameManager.Instance.World.IsOpenSkyAbove(clrId, targetPos.x, targetPos.y, targetPos.z)) {
-                    log.Debug($"open sky above {targetPos}; abandoning above check");
-                    return false;
+                if (CanAccess(internalId, source, GetTileEntitySignAt(targetPos))) {
+                    log.Debug($"found the next accessible elevator at {targetPos}");
+                    return true;
                 }
             }
 
