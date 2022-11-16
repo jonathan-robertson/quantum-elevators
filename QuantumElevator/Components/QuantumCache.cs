@@ -27,7 +27,9 @@ namespace QuantumElevator.Components {
 
         private static void OnBlockPlaced(Vector3i pos, BlockValue blockValue) {
             log.Debug($"OnBlockPlaced => {blockValue.Block.GetBlockName()} was just placed at {pos}");
-
+            if (blockValue.Block.blockID == TransportationServices.SecureQuantumBlockId) {
+                // TODO: possibly use harmony to modify BlockPlayerSign.GetBlockActivationCommands on Post (remove/shift out command at index zero
+            }
         }
 
         private static void OnBlockDestroyed(Vector3i pos, BlockValue blockValue) {

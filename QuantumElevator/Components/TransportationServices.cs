@@ -263,8 +263,11 @@ target.pass:{target.GetPassword()}");
         }
 
         private static void Teleport(EntityPlayer player, ClientInfo clientInfo, Vector3i elevatorPos) {
-            NetPackageTeleportPlayer netPackageTeleportPlayer = NetPackageManager.GetPackage<NetPackageTeleportPlayer>().Setup(elevatorPos.ToVector3CenterXZ(), new UnityEngine.Vector3(0, player.rotation.y, 0), false);
+            player.SetVelocity(player.position + elevatorPos); // TODO: test to see if this effects what other players see
+            log.Debug($"attempting to move to {elevatorPos}");
+
             player.Buffs.AddBuff("triggerQuantumJump");
+            NetPackageTeleportPlayer netPackageTeleportPlayer = NetPackageManager.GetPackage<NetPackageTeleportPlayer>().Setup(elevatorPos.ToVector3CenterXZ(), new UnityEngine.Vector3(0, player.rotation.y, 0), false);
             clientInfo.SendPackage(netPackageTeleportPlayer);
         }
 
