@@ -76,7 +76,8 @@
             <property name="IsTerrainDecoration" value="true" />
             <property name="OnlySimpleRotations" value="true" />
 
-            <!-- <property name="DisplayType" value="blockMulti" /> -->
+            <property name="Stacknumber" value="1" />
+            <property name="EconomicValue" value="2100" />
 
             <property name="BuffsWhenWalkedOn" value="triggerQuantumElevator" />
             <!-- 
@@ -172,7 +173,8 @@
             <property name="IsTerrainDecoration" value="true" />
             <property name="OnlySimpleRotations" value="true" />
 
-            <!-- <property name="DisplayType" value="blockMulti" /> -->
+            <property name="Stacknumber" value="1" />
+            <property name="EconomicValue" value="1700" />
 
             <property name="BuffsWhenWalkedOn" value="triggerQuantumElevator" />
             <!-- 
