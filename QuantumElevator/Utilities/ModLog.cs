@@ -1,11 +1,11 @@
 ﻿using System;
 
 namespace QuantumElevator.Utilities {
-    internal class ModLog {
+    internal class ModLog<T> {
         private readonly string className;
 
-        public ModLog(Type classType) {
-            className = classType.FullName;
+        public ModLog() {
+            className = typeof(T).FullName;
         }
 
         public void Trace(string message) {

@@ -1,35 +1,26 @@
 ﻿using QuantumElevator.Utilities;
-using System;
 using System.Collections.Generic;
 
 namespace QuantumElevator.Components {
     internal class TransportationServices {
-        private static readonly ModLog log = new ModLog(typeof(TransportationServices));
+        private static readonly ModLog<TransportationServices> log = new ModLog<TransportationServices>();
         private static int counter = 0;
         private static readonly List<EntityPlayer> players = GameManager.Instance.World.Players.list;
         public static int SecureQuantumBlockId { get; set; } = 0; // TODO: reduce access, maybe move to another component
         public static int PortableQuantumBlockId { get; set; } = 0; // TODO: reduce access, maybe move to another component
 
         internal static void OnGameStartDone() {
-            try {
-                SecureQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockSecure");
-                PortableQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockPortable");
-            } catch (Exception e) {
-                log.Error("Error OnGameStartDone", e);
-            }
+            SecureQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockSecure");
+            PortableQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockPortable");
         }
 
         internal static void OnGameUpdate() {
-            try {
-                if (counter < 5) {
-                    counter++;
-                    return;
-                }
-                counter = 0;
-                CyclePlayers();
-            } catch (Exception e) {
-                log.Error("Error OnGameUpdate", e);
+            if (counter < 5) {
+                counter++;
+                return;
             }
+            counter = 0;
+            CyclePlayers();
         }
 
         private static void CyclePlayers() {
@@ -54,8 +45,7 @@ namespace QuantumElevator.Components {
                 && CanAccess(player, clientInfo.InternalId, out var sourcePos, out var sourceBlockValue, out var sourceTileEntity)
                 && (angle > 0
                     ? TryGetFloorAbove(sourcePos, sourceBlockValue, sourceTileEntity, clientInfo.InternalId, out Vector3i destination)
-                    : TryGetFloorBelow(sourcePos, sourceTileEntity, clientInfo.InternalId, out destination)
-                    )) {
+                    : TryGetFloorBelow(sourcePos, sourceTileEntity, clientInfo.InternalId, out destination))) {
                 Teleport(player, clientInfo, destination);
             }
         }
@@ -96,6 +86,7 @@ namespace QuantumElevator.Components {
             return true;
         }
 
+        // TODO: delete? why was this here, again?
         private static bool HasPermission(Vector3i blockPos, Block block, PlatformUserIdentifierAbs internalId, out bool elevatorHasPassword) {
             if (!block.HasTileEntity) {
                 elevatorHasPassword = false;
@@ -263,11 +254,11 @@ target.pass:{target.GetPassword()}");
         }
 
         private static void Teleport(EntityPlayer player, ClientInfo clientInfo, Vector3i elevatorPos) {
-            player.SetVelocity(player.position + elevatorPos); // TODO: test to see if this effects what other players see
+            //player.SetVelocity(player.position + elevatorPos); // TODO: test to see if this effects what other players see
             log.Debug($"attempting to move to {elevatorPos}");
 
             player.Buffs.AddBuff("triggerQuantumJump");
-            NetPackageTeleportPlayer netPackageTeleportPlayer = NetPackageManager.GetPackage<NetPackageTeleportPlayer>().Setup(elevatorPos.ToVector3CenterXZ(), new UnityEngine.Vector3(0, player.rotation.y, 0), false);
+            NetPackageTeleportPlayer netPackageTeleportPlayer = NetPackageManager.GetPackage<NetPackageTeleportPlayer>().Setup(elevatorPos.ToVector3CenterXZ(), new UnityEngine.Vector3(0, player.rotation.y, 0), true);
             clientInfo.SendPackage(netPackageTeleportPlayer);
         }
 
