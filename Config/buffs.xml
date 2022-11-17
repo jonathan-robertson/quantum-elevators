@@ -1,4 +1,11 @@
 ﻿<config>
+    <append xpath="/buffs/buff[@name='buffStatusCheck02']">
+        <effect_group name="quantum-elevator-journal-entries">
+            <triggered_effect trigger="onSelfEnteredGame" action="AddJournalEntry" journal="quantumElevatorTip00" />
+            <triggered_effect trigger="onSelfEnteredGame" action="AddJournalEntry" journal="quantumElevatorTip01" />
+            <triggered_effect trigger="onSelfEnteredGame" action="AddJournalEntry" journal="quantumElevatorTip02" />
+        </effect_group>
+    </append>
     <append xpath="/buffs">
 
         <!-- icon="ui_game_symbol_enemy_dot" -->
