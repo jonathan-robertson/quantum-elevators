@@ -36,7 +36,7 @@ namespace QuantumElevator.Components {
             }
 
             // TODO: get parent block now and walk down/up based on that
-            // TODO: reduce frequency check and confirm player is still on block before executing teleport
+            // TODO: reduce frequency check and confirm player is still on block before executing teleport?
             var angle = CheckAngle(player);
             if (angle == 0) {
                 return;
@@ -64,15 +64,19 @@ namespace QuantumElevator.Components {
             return 0;
         }
 
+        // TODO: test with these debug logs enabled...
         private static bool CanAccess(EntityPlayer player, PlatformUserIdentifierAbs internalId, out Vector3i blockPos, out BlockValue blockValue, out TileEntitySign secureTileEntity) {
+            log.Debug($"checking if {player.GetDebugName()} CanAccess {player.GetBlockPosition()}");
             blockValue = GetBaseBlockPositionAndValue(player.GetBlockPosition(), out blockPos);
 
             if (PortableQuantumBlockId == blockValue.Block.blockID) {
+                log.Debug($"{player.GetBlockPosition()} contains a PortableQuantumBlock; premission is always granted");
                 secureTileEntity = null;
                 return true;
             }
 
             if (SecureQuantumBlockId != blockValue.Block.blockID) {
+                log.Debug($"{player.GetBlockPosition()} does not contain a PortableQuantumBlock or SecureQuantumBlock");
                 secureTileEntity = null;
                 return false;
             }
@@ -83,6 +87,7 @@ namespace QuantumElevator.Components {
                 return false;
             }
 
+            log.Debug($"confirmed that {player.GetDebugName()} CanAccess {player.GetBlockPosition()}");
             return true;
         }
 
