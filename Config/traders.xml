@@ -1,0 +1,12 @@
+<config>
+    <append xpath="/traders/trader_item_groups/trader_item_group[@name='traderAlways']">
+        <item name="quantumElevatorBlockSecure" />
+        <item name="quantumElevatorBlockSecure" />
+        <item name="quantumElevatorBlockSecure" />
+        <item name="quantumElevatorBlockSecure" />
+        <item name="quantumElevatorBlockPortable" />
+        <item name="quantumElevatorBlockPortable" />
+        <item name="quantumElevatorBlockPortable" />
+        <item name="quantumElevatorBlockPortable" />
+    </append>
+</config>
