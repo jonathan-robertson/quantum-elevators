@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - ?
 
 - add elevator 'look' controls
+- add elevator recipes
 - add locks/passwords to elevator
 - add notifications for locked elevator use
 - add on-demand password chaining

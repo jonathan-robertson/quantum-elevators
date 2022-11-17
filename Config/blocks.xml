@@ -1,9 +1,4 @@
 ﻿<config>
-    <append xpath="/blocks/block[@name='chandelierLight']">
-        <!-- name="MultiBlockDim" value="3,\d.*,3" -->
-        <property name="BuffsWhenWalkedOn" value="buffBurningEnvironment" />
-        <property name="ActiveRadiusEffects" value="buffCampfireAOE(3)" />
-    </append>
     <append xpath="/blocks">
         <block name="quantumElevatorBlockSecure">
             <property name="Extends" value="securityGatePlate" />
@@ -70,9 +65,8 @@
 
             <property class="RepairItems">
                 <property name="resourceForgedSteel" value="8" />
-                <property name="resourceElectricParts" value="8" />
-                <!-- TODO: possibly include requirement for nuclear components -->
-                <!-- <property name="resourceElectricParts" value="8" /> -->
+                <property name="resourceScrapPolymers" value="15" />
+                <property name="resourceElectricParts" value="30" />
             </property>
 
             <property name="CreativeMode" value="Player" />
@@ -167,9 +161,8 @@
 
             <property class="RepairItems">
                 <property name="resourceForgedSteel" value="8" />
-                <property name="resourceElectricParts" value="8" />
-                <!-- TODO: possibly include requirement for nuclear components -->
-                <!-- <property name="resourceElectricParts" value="8" /> -->
+                <property name="resourceScrapPolymers" value="10" />
+                <property name="resourceElectricParts" value="20" />
             </property>
 
             <property name="CreativeMode" value="Player" />
