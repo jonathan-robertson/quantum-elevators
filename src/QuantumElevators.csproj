@@ -7,8 +7,8 @@
     <ProjectGuid>{4A6FE3D4-9718-4CAB-B215-5AE0C8245B33}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>QuantumElevator</RootNamespace>
-    <AssemblyName>QuantumElevator</AssemblyName>
+    <RootNamespace>QuantumElevators</RootNamespace>
+    <AssemblyName>QuantumElevators</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

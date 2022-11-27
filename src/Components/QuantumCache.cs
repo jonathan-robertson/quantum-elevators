@@ -1,6 +1,6 @@
-﻿using QuantumElevator.Utilities;
+﻿using QuantumElevators.Utilities;
 
-namespace QuantumElevator.Components {
+namespace QuantumElevators.Components {
     internal class QuantumCache {
         private static readonly ModLog<QuantumCache> log = new ModLog<QuantumCache>();
         public static int QuantumBlockId { get; private set; } = 0; // TODO: reduce access, maybe move to another component

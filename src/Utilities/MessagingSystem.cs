@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace QuantumElevator.Utilities {
+namespace QuantumElevators.Utilities {
     internal class MessagingSystem {
 
         /**

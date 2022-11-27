@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace QuantumElevator.Utilities {
+namespace QuantumElevators.Utilities {
     internal class ModLog<T> {
         private readonly string className;
 

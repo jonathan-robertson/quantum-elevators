@@ -1,8 +1,8 @@
-﻿using QuantumElevator.Components;
-using QuantumElevator.Utilities;
+﻿using QuantumElevators.Components;
+using QuantumElevators.Utilities;
 using System;
 
-namespace QuantumElevator {
+namespace QuantumElevators {
     public class ModAPI : IModApi {
         private static readonly ModLog<ModAPI> log = new ModLog<ModAPI>();
         public void InitMod(Mod _modInstance) {

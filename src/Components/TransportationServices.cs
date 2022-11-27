@@ -1,7 +1,7 @@
-﻿using QuantumElevator.Utilities;
+﻿using QuantumElevators.Utilities;
 using System.Collections.Generic;
 
-namespace QuantumElevator.Components {
+namespace QuantumElevators.Components {
     internal class TransportationServices {
         private static readonly ModLog<TransportationServices> log = new ModLog<TransportationServices>();
         private static int counter = 0;
