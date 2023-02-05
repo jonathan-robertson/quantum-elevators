@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [ ] change activation effect (set/enter pass? or just error sound?)
 - [ ] change options when holding E (remove sign piece if possible)
 
+## [0.2.0] - ?
+
+- rename project
+- update code to match csharp standards
+- wrap debug logging in disabled debug flag
+
 ## [0.1.0] - 2022-11-17
 
 - add elevator 'look' controls

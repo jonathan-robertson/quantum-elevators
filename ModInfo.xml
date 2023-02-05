@@ -3,7 +3,7 @@
         <Name value="Quantum Elevators" />
         <Description value="A server-side elevator mod." />
         <Author value="Jonathan Robertson (Kanaverum)" />
-        <Version value="0.1.0" />
+        <Version value="0.2.0" />
         <Website value="https://github.com/jonathan-robertson/quantum-elevators" />
     </ModInfo>
 </xml>
