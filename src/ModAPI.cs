@@ -1,6 +1,4 @@
-﻿using QuantumElevators.Components;
-using QuantumElevators.Utilities;
-using System;
+﻿using System;
 
 namespace QuantumElevators
 {
@@ -12,15 +10,8 @@ namespace QuantumElevators
 
         public void InitMod(Mod _modInstance)
         {
-            try
-            {
-                ModEvents.GameStartDone.RegisterHandler(OnGameStartDone);
-                ModEvents.GameUpdate.RegisterHandler(OnGameUpdate);
-            }
-            catch (Exception e)
-            {
-                _log.Error("Error on InitMod", e);
-            }
+            ModEvents.GameStartDone.RegisterHandler(OnGameStartDone);
+            ModEvents.GameUpdate.RegisterHandler(OnGameUpdate);
         }
 
         private void OnGameStartDone()

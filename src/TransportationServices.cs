@@ -1,13 +1,12 @@
-﻿using QuantumElevators.Utilities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace QuantumElevators.Components
+namespace QuantumElevators
 {
     internal class TransportationServices
     {
-        private static readonly ModLog<TransportationServices> log = new ModLog<TransportationServices>();
-        private static int counter = 0;
-        private static readonly List<EntityPlayer> players = GameManager.Instance.World.Players.list;
+        private static readonly ModLog<TransportationServices> _log = new ModLog<TransportationServices>();
+        private static int _counter = 0;
+        private static readonly List<EntityPlayer> _players = GameManager.Instance.World.Players.list;
         public static int SecureQuantumBlockId { get; set; } = 0; // TODO: reduce access, maybe move to another component
         public static int PortableQuantumBlockId { get; set; } = 0; // TODO: reduce access, maybe move to another component
 
@@ -19,18 +18,18 @@ namespace QuantumElevators.Components
 
         internal static void OnGameUpdate()
         {
-            if (counter < 5)
+            if (_counter < 5)
             {
-                counter++;
+                _counter++;
                 return;
             }
-            counter = 0;
+            _counter = 0;
             CyclePlayers();
         }
 
         private static void CyclePlayers()
         {
-            foreach (var player in players)
+            foreach (var player in _players)
             {
                 HandleViewControls(player);
                 //CheckDirectionBuff(player); // TODO: it seems I cannot find a way to make actions work
@@ -83,19 +82,19 @@ namespace QuantumElevators.Components
         // TODO: test with these debug logs enabled...
         private static bool CanAccess(EntityPlayer player, PlatformUserIdentifierAbs internalId, out Vector3i blockPos, out BlockValue blockValue, out TileEntitySign secureTileEntity)
         {
-            log.Debug($"checking if {player.GetDebugName()} CanAccess {player.GetBlockPosition()}");
+            _log.Debug($"checking if {player.GetDebugName()} CanAccess {player.GetBlockPosition()}");
             blockValue = GetBaseBlockPositionAndValue(player.GetBlockPosition(), out blockPos);
 
             if (PortableQuantumBlockId == blockValue.Block.blockID)
             {
-                log.Debug($"{player.GetBlockPosition()} contains a PortableQuantumBlock; premission is always granted");
+                _log.Debug($"{player.GetBlockPosition()} contains a PortableQuantumBlock; premission is always granted");
                 secureTileEntity = null;
                 return true;
             }
 
             if (SecureQuantumBlockId != blockValue.Block.blockID)
             {
-                log.Debug($"{player.GetBlockPosition()} does not contain a PortableQuantumBlock or SecureQuantumBlock");
+                _log.Debug($"{player.GetBlockPosition()} does not contain a PortableQuantumBlock or SecureQuantumBlock");
                 secureTileEntity = null;
                 return false;
             }
@@ -107,7 +106,7 @@ namespace QuantumElevators.Components
                 return false;
             }
 
-            log.Debug($"confirmed that {player.GetDebugName()} CanAccess {player.GetBlockPosition()}");
+            _log.Debug($"confirmed that {player.GetDebugName()} CanAccess {player.GetBlockPosition()}");
             return true;
         }
 
@@ -169,18 +168,18 @@ namespace QuantumElevators.Components
                 || !source.IsLocked()
                 || !source.HasPassword())
             {
-                log.Debug($"CANNOT ACCESS because: !targetHasPassword ({!targetHasPassword}) || source == null({source == null}) || !source.IsLocked()({!source.IsLocked()}) || !source.HasPassword()({!source.HasPassword()})");
+                _log.Debug($"CANNOT ACCESS because: !targetHasPassword ({!targetHasPassword}) || source == null({source == null}) || !source.IsLocked()({!source.IsLocked()}) || !source.HasPassword()({!source.HasPassword()})");
                 return false;
             } // source and target have passwords, source is locked
             if (source.GetOwner().Equals(target.GetOwner())
                 && source.GetPassword().Equals(target.GetPassword()))
             {
-                log.Debug($"CAN ACCESS because: source.GetOwner() == target.GetOwner()({source.GetOwner() == target.GetOwner()}) && source.GetPassword() == target.GetPassword()({source.GetPassword() == target.GetPassword()})");
+                _log.Debug($"CAN ACCESS because: source.GetOwner() == target.GetOwner()({source.GetOwner() == target.GetOwner()}) && source.GetPassword() == target.GetPassword()({source.GetPassword() == target.GetPassword()})");
                 target.GetUsers().Add(internalId); // dynamically register this user to target!
                 target.SetModified();
                 return true;
             } // source/target owners or passwords don't match=
-            log.Debug($@"CANNOT ACCESS because: source.GetOwner() != target.GetOwner() || source.GetPassword() != target.GetPassword()
+            _log.Debug($@"CANNOT ACCESS because: source.GetOwner() != target.GetOwner() || source.GetPassword() != target.GetPassword()
 source.owner:
     CombinedString:{source.GetOwner().CombinedString}
     PlatformIdentifierString:{source.GetOwner().PlatformIdentifierString}
@@ -208,17 +207,17 @@ target.pass:{target.GetPassword()}");
 
         private static bool TryGetFloorAbove(Vector3i sourcePos, BlockValue sourceBlockValue, TileEntitySign source, PlatformUserIdentifierAbs internalId, out Vector3i targetPos)
         {
-            log.Debug("calling TryGetFloorAbove");
+            _log.Debug("calling TryGetFloorAbove");
             targetPos = sourcePos;
             var clrId = GameManager.Instance.World.ChunkCache.ClusterIdx;
             // confirm if 256 is the right place to stop
 
-            log.Debug($"planning to look above, starting at {targetPos}");
+            _log.Debug($"planning to look above, starting at {targetPos}");
             BlockValue targetBlockValue;
             for (targetPos.y += BlockHeight(sourceBlockValue); targetPos.y < 256; targetPos.y += BlockHeight(targetBlockValue))
             {
                 targetBlockValue = GetBaseBlockPositionAndValue(targetPos, out targetPos);
-                log.Debug($"now checking {targetPos}");
+                _log.Debug($"now checking {targetPos}");
 
                 if (PortableQuantumBlockId == targetBlockValue.Block.blockID)
                 {
@@ -229,7 +228,7 @@ target.pass:{target.GetPassword()}");
                 {
                     if (GameManager.Instance.World.IsOpenSkyAbove(clrId, targetPos.x, targetPos.y, targetPos.z))
                     {
-                        log.Debug($"open sky above {targetPos}; abandoning above check");
+                        _log.Debug($"open sky above {targetPos}; abandoning above check");
                         return false;
                     }
                     continue;
@@ -237,24 +236,24 @@ target.pass:{target.GetPassword()}");
 
                 if (CanAccess(internalId, source, GetTileEntitySignAt(targetPos)))
                 {
-                    log.Debug($"found the next accessible elevator at {targetPos}");
+                    _log.Debug($"found the next accessible elevator at {targetPos}");
                     return true;
                 }
             }
 
-            log.Debug($"no elevator was found below");
+            _log.Debug($"no elevator was found below");
             return false;
         }
 
         private static bool TryGetFloorBelow(Vector3i sourcePos, TileEntitySign source, PlatformUserIdentifierAbs internalId, out Vector3i targetPos)
         {
-            log.Debug("calling TryGetFloorBelow");
+            _log.Debug("calling TryGetFloorBelow");
             targetPos = sourcePos;
             // TODO: confirm if 0 is the right place to stop
             for (targetPos.y--; targetPos.y > 0; targetPos.y--)
             {
                 var targetBlockValue = GetBaseBlockPositionAndValue(targetPos, out targetPos);
-                log.Debug($"checking {targetPos} ({Block.nameIdMapping.GetNameForId(targetBlockValue.Block.blockID)})");
+                _log.Debug($"checking {targetPos} ({Block.nameIdMapping.GetNameForId(targetBlockValue.Block.blockID)})");
 
                 if (PortableQuantumBlockId == targetBlockValue.Block.blockID)
                 {
@@ -264,31 +263,31 @@ target.pass:{target.GetPassword()}");
                 if (SecureQuantumBlockId == targetBlockValue.Block.blockID
                     && CanAccess(internalId, source, GetTileEntitySignAt(targetPos)))
                 {
-                    log.Debug($"found the next accessible elevator at {targetPos}");
+                    _log.Debug($"found the next accessible elevator at {targetPos}");
                     return true;
                 }
             }
 
-            log.Debug($"no elevator was found below");
+            _log.Debug($"no elevator was found below");
             return false;
         }
 
         private static BlockValue GetBaseBlockPositionAndValue(Vector3i pos, out Vector3i blockPosition)
         {
             blockPosition = pos;
-            log.Debug($"GetBaseBlockPositionAndValue at position {pos}");
+            _log.Debug($"GetBaseBlockPositionAndValue at position {pos}");
             var blockValue = GameManager.Instance.World.ChunkCache.GetBlock(pos);
             if (blockValue.ischild)
             {
-                log.Debug($"Block found is a multi-block; self: {blockValue}, isChild? {blockValue.ischild}, parent: {blockValue.parent}");
-                log.Debug($">> parentY: {blockValue.parenty}");
+                _log.Debug($"Block found is a multi-block; self: {blockValue}, isChild? {blockValue.ischild}, parent: {blockValue.parent}");
+                _log.Debug($">> parentY: {blockValue.parenty}");
                 blockPosition.y += blockValue.parenty;
                 // NOTE: block value will be the same; leaving note here in case we ever find a way to make compound blocks
                 // blockValue = GameManager.Instance.World.GetBlock(blockPosition);
             }
             else
             {
-                log.Debug($"Block found is not a multi-block; self: {blockValue}, isChild? {blockValue.ischild}");
+                _log.Debug($"Block found is not a multi-block; self: {blockValue}, isChild? {blockValue.ischild}");
             }
             return blockValue;
         }
@@ -297,17 +296,17 @@ target.pass:{target.GetPassword()}");
         {
             if (blockValue.Block.isMultiBlock)
             {
-                log.Debug($"height of focused block is {blockValue.Block.multiBlockPos.dim.y}");
+                _log.Debug($"height of focused block is {blockValue.Block.multiBlockPos.dim.y}");
                 return blockValue.Block.multiBlockPos.dim.y;
             }
-            log.Debug($"height of focused block is 1");
+            _log.Debug($"height of focused block is 1");
             return 1;
         }
 
         private static void Teleport(EntityPlayer player, ClientInfo clientInfo, Vector3i elevatorPos)
         {
-            //player.SetVelocity(player.position + elevatorPos); // TODO: test to see if this effects what other players see
-            log.Debug($"attempting to move to {elevatorPos}");
+            //player.SetVelocity(player.position + elevatorPos); // TODO: test to see if this effects what other _players see
+            _log.Debug($"attempting to move to {elevatorPos}");
 
             _ = player.Buffs.AddBuff("triggerQuantumJump");
             var netPackageTeleportPlayer = NetPackageManager.GetPackage<NetPackageTeleportPlayer>().Setup(elevatorPos.ToVector3CenterXZ(), new UnityEngine.Vector3(0, player.rotation.y, 0), true);
@@ -343,7 +342,7 @@ target.pass:{target.GetPassword()}");
         /*
         private static void HandlePendingRequests() {
             _log.Debug("HandlePendingRequests");
-            foreach (var player in players) {
+            foreach (var player in _players) {
                 if (player.GetCVar("quantumJumpRequested") == 1) {
                     MessagingSystem.Whisper("handled quantum jump", player.entityId);
                     player.SetCVar("quantumJumpRequested", 0);
