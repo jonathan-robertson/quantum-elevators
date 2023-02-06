@@ -7,14 +7,6 @@ namespace QuantumElevators
         private static readonly ModLog<TransportationServices> _log = new ModLog<TransportationServices>();
         private static int _counter = 0;
         private static readonly List<EntityPlayer> _players = GameManager.Instance.World.Players.list;
-        public static int SecureQuantumBlockId { get; set; } = 0; // TODO: reduce access, maybe move to another component
-        public static int PortableQuantumBlockId { get; set; } = 0; // TODO: reduce access, maybe move to another component
-
-        internal static void OnGameStartDone()
-        {
-            SecureQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockSecure");
-            PortableQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockPortable");
-        }
 
         internal static void OnGameUpdate()
         {
@@ -60,7 +52,7 @@ namespace QuantumElevators
             }
         }
 
-        private static bool TryGetClientInfo(int entityId, out ClientInfo clientInfo)
+        internal static bool TryGetClientInfo(int entityId, out ClientInfo clientInfo)
         {
             clientInfo = ConnectionManager.Instance.Clients.ForEntityId(entityId);
             return clientInfo != null;
@@ -80,19 +72,20 @@ namespace QuantumElevators
         }
 
         // TODO: test with these debug logs enabled...
-        private static bool CanAccess(EntityPlayer player, PlatformUserIdentifierAbs internalId, out Vector3i blockPos, out BlockValue blockValue, out TileEntitySign secureTileEntity)
+        internal static bool CanAccess(EntityPlayer player, PlatformUserIdentifierAbs internalId, out Vector3i blockPos, out BlockValue blockValue, out TileEntitySign secureTileEntity)
         {
-            _log.Debug($"checking if {player.GetDebugName()} CanAccess {player.GetBlockPosition()}");
-            blockValue = GetBaseBlockPositionAndValue(player.GetBlockPosition(), out blockPos);
+            blockPos = player.GetBlockPosition();
+            _log.Debug($"checking if {player.GetDebugName()} CanAccess {blockPos}");
+            blockValue = GetBaseBlockPositionAndValue(blockPos, out blockPos);
 
-            if (PortableQuantumBlockId == blockValue.Block.blockID)
+            if (ModApi.PortableQuantumBlockId == blockValue.Block.blockID)
             {
                 _log.Debug($"{player.GetBlockPosition()} contains a PortableQuantumBlock; premission is always granted");
                 secureTileEntity = null;
                 return true;
             }
 
-            if (SecureQuantumBlockId != blockValue.Block.blockID)
+            if (ModApi.SecureQuantumBlockId != blockValue.Block.blockID)
             {
                 _log.Debug($"{player.GetBlockPosition()} does not contain a PortableQuantumBlock or SecureQuantumBlock");
                 secureTileEntity = null;
@@ -205,7 +198,7 @@ target.pass:{target.GetPassword()}");
             }
         }
 
-        private static bool TryGetFloorAbove(Vector3i sourcePos, BlockValue sourceBlockValue, TileEntitySign source, PlatformUserIdentifierAbs internalId, out Vector3i targetPos)
+        internal static bool TryGetFloorAbove(Vector3i sourcePos, BlockValue sourceBlockValue, TileEntitySign source, PlatformUserIdentifierAbs internalId, out Vector3i targetPos)
         {
             _log.Debug("calling TryGetFloorAbove");
             targetPos = sourcePos;
@@ -219,12 +212,13 @@ target.pass:{target.GetPassword()}");
                 targetBlockValue = GetBaseBlockPositionAndValue(targetPos, out targetPos);
                 _log.Debug($"now checking {targetPos}");
 
-                if (PortableQuantumBlockId == targetBlockValue.Block.blockID)
+                if (ModApi.PortableQuantumBlockId == targetBlockValue.Block.blockID)
                 {
+                    _log.Debug($"found the next accessible (portable) elevator at {targetPos} can be accessed");
                     return true;
                 }
 
-                if (SecureQuantumBlockId != targetBlockValue.Block.blockID)
+                if (ModApi.SecureQuantumBlockId != targetBlockValue.Block.blockID)
                 {
                     if (GameManager.Instance.World.IsOpenSkyAbove(clrId, targetPos.x, targetPos.y, targetPos.z))
                     {
@@ -236,7 +230,7 @@ target.pass:{target.GetPassword()}");
 
                 if (CanAccess(internalId, source, GetTileEntitySignAt(targetPos)))
                 {
-                    _log.Debug($"found the next accessible elevator at {targetPos}");
+                    _log.Debug($"found the next accessible (secured) elevator at {targetPos} can be accessed");
                     return true;
                 }
             }
@@ -245,7 +239,7 @@ target.pass:{target.GetPassword()}");
             return false;
         }
 
-        private static bool TryGetFloorBelow(Vector3i sourcePos, TileEntitySign source, PlatformUserIdentifierAbs internalId, out Vector3i targetPos)
+        internal static bool TryGetFloorBelow(Vector3i sourcePos, TileEntitySign source, PlatformUserIdentifierAbs internalId, out Vector3i targetPos)
         {
             _log.Debug("calling TryGetFloorBelow");
             targetPos = sourcePos;
@@ -255,15 +249,16 @@ target.pass:{target.GetPassword()}");
                 var targetBlockValue = GetBaseBlockPositionAndValue(targetPos, out targetPos);
                 _log.Debug($"checking {targetPos} ({Block.nameIdMapping.GetNameForId(targetBlockValue.Block.blockID)})");
 
-                if (PortableQuantumBlockId == targetBlockValue.Block.blockID)
+                if (ModApi.PortableQuantumBlockId == targetBlockValue.Block.blockID)
                 {
+                    _log.Debug($"found the next accessible (portable) elevator at {targetPos} can be accessed");
                     return true;
                 }
 
-                if (SecureQuantumBlockId == targetBlockValue.Block.blockID
+                if (ModApi.SecureQuantumBlockId == targetBlockValue.Block.blockID
                     && CanAccess(internalId, source, GetTileEntitySignAt(targetPos)))
                 {
-                    _log.Debug($"found the next accessible elevator at {targetPos}");
+                    _log.Debug($"found the next accessible (secured) elevator at {targetPos} can be accessed");
                     return true;
                 }
             }

@@ -20,9 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.0] - ?
 
 - add admin command to toggle debug logging
+- add support for local players
 - allow elevator blocks to be stacked up to 5
 - rename project
 - update code to match csharp standards
+- update to jump/crouch controls vs look angles
 - wrap debug logging in disabled debug flag
 
 ## [0.1.0] - 2022-11-17

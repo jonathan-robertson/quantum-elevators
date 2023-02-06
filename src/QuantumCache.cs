@@ -28,7 +28,7 @@
         private static void OnBlockPlaced(Vector3i pos, BlockValue blockValue)
         {
             _log.Debug($"OnBlockPlaced => {blockValue.Block.GetBlockName()} was just placed at {pos}");
-            if (blockValue.Block.blockID == TransportationServices.SecureQuantumBlockId)
+            if (blockValue.Block.blockID == ModApi.SecureQuantumBlockId)
             {
                 // TODO: possibly use harmony to modify BlockPlayerSign.GetBlockActivationCommands on Post (remove/shift out command at index zero
             }

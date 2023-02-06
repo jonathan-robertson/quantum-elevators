@@ -44,7 +44,34 @@
             </effect_group>
         </buff>
 
-        <buff name="notifyQuantumElevatorLocked">
+        <buff name="quantumElevatorCooldown" icon="ui_game_symbol_enemy_dot" icon_color="0,127,255">
+            <duration value="0.5" />
+            <stack_type value="replace" />
+            <display_value value="xxx" />
+            <display_value_key value="No Next Floor" />
+        </buff>
+
+        <buff name="quantumElevatorGoingUp" icon="ui_game_symbol_enemy_dot_up" icon_color="0,127,255">
+            <duration value="1" />
+            <stack_type value="replace" />
+            <display_value value="quantumElevatorTargetElevation" />
+            <display_value_key value="{0:0}" />
+            <effect_group>
+                <triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="quantumElevatorGoingDown" />
+            </effect_group>
+        </buff>
+
+        <buff name="quantumElevatorGoingDown" icon="ui_game_symbol_enemy_dot_down" icon_color="0,127,255">
+            <duration value="1" />
+            <stack_type value="replace" />
+            <display_value value="quantumElevatorTargetElevation" />
+            <display_value_key value="{0:0}" />
+            <effect_group>
+                <triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="quantumElevatorGoingUp" />
+            </effect_group>
+        </buff>
+
+        <buff name="notifyQuantumElevatorLocked" hidden="true">
             <duration value="5.5" />
             <stack_type value="ignore" />
             <effect_group>
@@ -52,7 +79,7 @@
             </effect_group>
         </buff>
 
-        <buff name="notifyQuantumElevatorLockedWithPassword">
+        <buff name="notifyQuantumElevatorLockedWithPassword" hidden="true">
             <duration value="5.5" />
             <stack_type value="ignore" />
             <effect_group>
@@ -60,7 +87,7 @@
             </effect_group>
         </buff>
 
-        <buff name="triggerQuantumJump">
+        <buff name="triggerQuantumJump" hidden="true">
             <duration value="2" />
             <stack_type value="replace" />
             <update_rate value=".1" />
