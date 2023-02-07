@@ -59,16 +59,16 @@ namespace QuantumElevators
                 if (player is EntityPlayerLocal localPlayer)
                 {
                     _ = localPlayer.Buffs.AddBuff(BuffTriggerJumpName); // for visuals & sound-effects
-                    localPlayer.SetCVar(CVarTargetElevationName, destinationCenter.y);
-                    _ = localPlayer.Buffs.AddBuff(direction > 0 ? BuffGoingUpName : BuffGoingDownName);
+                    //localPlayer.SetCVar(CVarTargetElevationName, destinationCenter.y);
+                    //_ = localPlayer.Buffs.AddBuff(direction > 0 ? BuffGoingUpName : BuffGoingDownName);
                     //destinationCenter.y += 0.2f;
                     localPlayer.TeleportToPosition(destinationCenter, true, localPlayer.rotation);
                 }
                 else if (TransportationServices.TryGetClientInfo(player.entityId, out var clientInfo))
                 {
                     _ = player.Buffs.AddBuff("triggerQuantumJump"); // for visuals & sound-effects
-                    player.SetCVar(CVarTargetElevationName, destinationCenter.y);
-                    _ = player.Buffs.AddBuff(direction > 0 ? BuffGoingUpName : BuffGoingDownName);
+                    //player.SetCVar(CVarTargetElevationName, destinationCenter.y);
+                    //_ = player.Buffs.AddBuff(direction > 0 ? BuffGoingUpName : BuffGoingDownName);
                     //destinationCenter.y += 0.2f;
                     clientInfo.SendPackage(NetPackageManager.GetPackage<NetPackageTeleportPlayer>().Setup(destinationCenter, player.rotation, true));
                 }
