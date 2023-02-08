@@ -7,8 +7,6 @@
         </effect_group>
     </append>
     <append xpath="/buffs">
-
-        <!-- icon="ui_game_symbol_enemy_dot" -->
         <buff name="triggerQuantumElevator" hidden="true">
             <duration value=".1" />
             <update_rate value=".1" />
@@ -21,14 +19,14 @@
                 <triggered_effect trigger="onSelfBuffStart" action="AddBuff" buff="inQuantumElevator" />
             </effect_group>
         </buff>
-
-        <!-- TODO: add icon_color, name_key, desc_key? -->
-        <buff name="inQuantumElevator" icon="ui_game_symbol_map_city" icon_color="0,127,255">
-            <duration value=".2" />
+        <buff name="inQuantumElevator" name_key="inQuantumElevatorName" description_key="inQuantumElevatorDesc" icon="ui_game_symbol_map_city" icon_color="0,127,255">
+            <duration value="0" />
+            <update_rate value=".1" />
             <stack_type value="replace" />
             <display_value value="quantumElevatorTargetElevation" />
             <display_value_key value="{0:0}" />
-            <effect_group>
+
+            <effect_group name="handle_sounds">
                 <!-- parent_transform="Spine1" local_offset="0,-.2,0" -->
                 <!--  shape_mesh="true" -->
                 <!-- parent_transform="LOD0" -->
@@ -52,8 +50,16 @@
                 </requirements>
                 <passive_effect name="JumpStrength" operation="perc_subtract" value="0.99" />
                 <passive_effect name="StaminaLoss" operation="perc_add" value="-1.00" tags="jumping" />
-                <!-- 
-	<property name="CrouchYOffsetFP" value="-0.65"/> -->
+            </effect_group>
+
+            <effect_group name="timer">
+                <triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$quantumElevatorTimer" operation="set" value="20" />
+                <triggered_effect trigger="onSelfBuffStack" action="ModifyCVar" cvar="$quantumElevatorTimer" operation="set" value="20" />
+                <triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$quantumElevatorTimer" operation="subtract" value="1" />
+                <triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" buff="inQuantumElevator">
+                    <requirement name="CVarCompare" cvar="$quantumElevatorTimer" operation="LTE" value="0" />
+                </triggered_effect>
+                <triggered_effect trigger="onSelfBuffRemove" action="ModifyCVar" cvar="$quantumElevatorTimer" operation="set" value="0" />
             </effect_group>
         </buff>
 

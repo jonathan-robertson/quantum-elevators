@@ -14,3 +14,6 @@ quantumElevatorTip02,Journal Tip,,"These Panels [ff8000]cannot be picked up once
 
 notifyQuantumElevatorLockedTooltip,buffs,Buff,"This Quantum Elevator is [ff8000]locked[-]; get in touch with the owner."
 notifyQuantumElevatorLockedWithPasswordTooltip,buffs,Buff,"This Quantum Elevator is [ff8000]locked and requires a password[-]."
+
+inQuantumElevatorName,buffs,Buff,"Quantum Elevator Controls"
+inQuantumElevatorDesc,buffs,Buff,"You are currently standing in a Quantum Elevator.\n\nCurrent Elevation: [007fff]{cvar(quantumElevatorTargetElevation:0)}[-]\n\nFrom a [ff8000]Standing[-] position:\n- Use [ff8000]Jump[-] to travel one floor up\n- Use [ff8000]Crouch[-] to travel one floor down"

@@ -4,14 +4,32 @@ using System.Collections.Concurrent;
 
 namespace QuantumElevators
 {
+    internal enum PlayerState
+    {
+        Neutral, Crouching, Jumping
+    }
+
     [HarmonyPatch(typeof(EntityAlive), "updateCurrentBlockPosAndValue")]
     internal class EntityAlive_updateCurrentBlockPosAndValue_Patches
     {
         private static readonly ModLog<EntityAlive_updateCurrentBlockPosAndValue_Patches> _log = new ModLog<EntityAlive_updateCurrentBlockPosAndValue_Patches>();
 
+        /// <summary>
+        /// Concurrency-safe dictionary for recording what the last state was.
+        /// Used to identify "the moment" player switches from neutral stance to jumping or crouching to simulate single-button reaction
+        /// and avoid multiple triggers when player holds key down.
+        /// </summary>
         private static readonly ConcurrentDictionary<int, PlayerState> _prevStates = new ConcurrentDictionary<int, PlayerState>();
 
-        public static void Postfix(EntityAlive __instance, Vector3i ___blockPosStandingOn, BlockValue ___blockValueStandingOn, bool ___bCrouching, bool ___bJumping/*, JumpState ___jumpState, bool ___CrouchingLocked, int ___walkTypeBeforeCrouch*/)
+        /// <summary>
+        /// Patch responsible for 'intercepting' crouch/jump controls if the given player is standing on a quantum block. 
+        /// </summary>
+        /// <param name="__instance">EntityAlive instance to check from.</param>
+        /// <param name="___blockPosStandingOn">Block Position this entity is standing on.</param>
+        /// <param name="___blockValueStandingOn">BlockValue this entity is standing on.</param>
+        /// <param name="___bCrouching">Whether the client behind this entity has the Crouch key held down (or CrouchLock is enabled).</param>
+        /// <param name="___bJumping">Whether the client behind this entity has the Jump key held down.</param>
+        public static void Postfix(EntityAlive __instance, Vector3i ___blockPosStandingOn, BlockValue ___blockValueStandingOn, bool ___bCrouching, bool ___bJumping)
         {
             try
             {
@@ -19,11 +37,7 @@ namespace QuantumElevators
                         || ___blockValueStandingOn.Block.blockID == ModApi.SecureQuantumBlockId)
                     && __instance is EntityPlayer player)
                 {
-                    player.CrouchingLocked = false; // TODO: this works for local, but not for remote
-                    // TODO: add a method (probably netPackage) for remote players
-
-
-                    //_log.Info($"player {player}: jump state: {___jumpState}, walkTypeBeforeCrouch: {___walkTypeBeforeCrouch}");
+                    // update elevation for buff shown while player standing on block (informative, only)
                     player.SetCVar(CoreLogic.CVarTargetElevationName, Utils.Fastfloor(player.position.y));
 
                     var currentPlayerState = GetCurrentPlayerState(___bCrouching, ___bJumping);
@@ -37,20 +51,16 @@ namespace QuantumElevators
                     if (prevPlayerState == PlayerState.Neutral && currentPlayerState != PlayerState.Neutral)
                     {
                         _log.Info($"{player} was {prevPlayerState} and is now {currentPlayerState}");
-
-                        // TODO: pass ___blockPosStandingOn and ___blockValueStandingOn into Warp method to save calls
                         if (currentPlayerState == PlayerState.Crouching)
                         {
-                            CoreLogic.Warp(-1, player);
+                            CoreLogic.Warp(Direction.Down, player, ___blockPosStandingOn, ___blockValueStandingOn);
                         }
                         else
                         {
-                            CoreLogic.Warp(+1, player);
+                            CoreLogic.Warp(Direction.Up, player, ___blockPosStandingOn, ___blockValueStandingOn);
                         }
                         return;
                     }
-
-                    //_log.Debug($"player {__instance} on {___blockPosStandingOn}; jumping: {player.Jumping}; crouching: {player.Crouching}");
                 }
             }
             catch (Exception e)
@@ -63,10 +73,5 @@ namespace QuantumElevators
         {
             return !crouching && !jumping ? PlayerState.Neutral : crouching ? PlayerState.Crouching : PlayerState.Jumping;
         }
-    }
-
-    internal enum PlayerState
-    {
-        Neutral, Crouching, Jumping
     }
 }

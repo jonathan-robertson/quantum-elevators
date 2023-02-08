@@ -9,8 +9,8 @@ namespace QuantumElevators
         private static readonly ModLog<ModApi> _log = new ModLog<ModApi>();
 
         public static bool DebugMode { get; set; } = false;
-        public static int SecureQuantumBlockId { get; set; } = 0; // TODO: reduce access, maybe move to another component
-        public static int PortableQuantumBlockId { get; set; } = 0; // TODO: reduce access, maybe move to another component
+        internal static int SecureQuantumBlockId { get; set; } = 0;
+        internal static int PortableQuantumBlockId { get; set; } = 0;
 
         public void InitMod(Mod _modInstance)
         {
@@ -25,6 +25,7 @@ namespace QuantumElevators
                     || GameManager.Instance.World == null
                     || GameManager.Instance.World.IsRemote())
                 {
+                    // avoid loading mod if connecting to a remote world (let this mod on the host's side control this functionality)
                     _log.Warn("QuantumElevators is a host-side mod and is disabled when connecting to another player or dedicated server's world. To enjoy these features in remote worlds, the host will need to have this mod installed.");
                     return;
                 }
