@@ -331,5 +331,11 @@ target.pass:{target.GetPassword()}");
                 _ = player.Buffs.AddBuff(BuffNotifyLockedName);
             }
         }
+
+        internal static bool IsQuantumBlock(int blockId)
+        {
+            return blockId == ModApi.PortableQuantumBlockId
+                || blockId == ModApi.SecureQuantumBlockId;
+        }
     }
 }

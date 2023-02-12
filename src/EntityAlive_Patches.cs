@@ -33,9 +33,7 @@ namespace QuantumElevators
         {
             try
             {
-                if ((___blockValueStandingOn.Block.blockID == ModApi.PortableQuantumBlockId
-                        || ___blockValueStandingOn.Block.blockID == ModApi.SecureQuantumBlockId)
-                    && __instance is EntityPlayer player)
+                if (CoreLogic.IsQuantumBlock(___blockValueStandingOn.Block.blockID) && __instance is EntityPlayer player)
                 {
                     // update elevation for buff shown while player standing on block (informative, only)
                     player.SetCVar(CoreLogic.CVarTargetElevationName, Utils.Fastfloor(player.position.y));
@@ -50,7 +48,6 @@ namespace QuantumElevators
 
                     if (prevPlayerState == PlayerState.Neutral && currentPlayerState != PlayerState.Neutral)
                     {
-                        _log.Info($"{player} was {prevPlayerState} and is now {currentPlayerState}");
                         if (currentPlayerState == PlayerState.Crouching)
                         {
                             CoreLogic.Warp(Direction.Down, player, ___blockPosStandingOn, ___blockValueStandingOn);
