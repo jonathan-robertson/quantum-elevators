@@ -14,28 +14,33 @@ namespace QuantumElevators
 
         public void InitMod(Mod _modInstance)
         {
+            var harmony = new Harmony(GetType().ToString());
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            _log.Info("loaded");
+
             ModEvents.GameStartDone.RegisterHandler(OnGameStartDone);
+        }
+
+        internal bool IsServer()
+        {
+            var isServer = SingletonMonoBehaviour<ConnectionManager>.Instance.IsServer;
+            if (!isServer)
+            {
+                // TODO: GameManager.Instance == null || GameManager.Instance.World == null || GameManager.Instance.World.IsRemote()
+                _log.Warn("QuantumElevators is a host-side mod and is disabled when connecting to another player or dedicated server's world. To enjoy these features in remote worlds, the host will need to have this mod installed.");
+            }
+            return isServer;
         }
 
         private void OnGameStartDone()
         {
             try
             {
-                if (GameManager.Instance == null
-                    || GameManager.Instance.World == null
-                    || GameManager.Instance.World.IsRemote())
+                if (IsServer())
                 {
-                    // avoid loading mod if connecting to a remote world (let this mod on the host's side control this functionality)
-                    _log.Warn("QuantumElevators is a host-side mod and is disabled when connecting to another player or dedicated server's world. To enjoy these features in remote worlds, the host will need to have this mod installed.");
-                    return;
+                    SecureQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockSecure");
+                    PortableQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockPortable");
                 }
-
-                SecureQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockSecure");
-                PortableQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockPortable");
-
-                var harmony = new Harmony(GetType().ToString());
-                harmony.PatchAll(Assembly.GetExecutingAssembly());
-                _log.Info("loaded");
             }
             catch (Exception e)
             {
