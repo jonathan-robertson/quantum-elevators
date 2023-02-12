@@ -10,10 +10,6 @@
         <buff name="triggerQuantumElevator" hidden="true">
             <duration value=".1" />
             <update_rate value=".1" />
-            <!-- duration: append the duration -->
-            <!-- effect: stack up the effect -->
-            <!-- replace: reset the duration -->
-            <!-- ignore: 2nd buff bounces -->
             <stack_type value="ignore" />
             <effect_group>
                 <triggered_effect trigger="onSelfBuffStart" action="AddBuff" buff="inQuantumElevator" />
@@ -27,21 +23,10 @@
             <display_value_key value="{0:0}" />
 
             <effect_group name="handle_sounds">
-                <!-- parent_transform="Spine1" local_offset="0,-.2,0" -->
-                <!--  shape_mesh="true" -->
-                <!-- parent_transform="LOD0" -->
-                <!-- <triggered_effect trigger="onSelfBuffStart" action="AttachParticleEffectToEntity" particle="RadiatedParticlesOnMesh" parent_transform="LOD0" shape_mesh="true" />
-                <triggered_effect trigger="onSelfDied" action="RemoveParticleEffectFromEntity" particle="RadiatedParticlesOnMesh" />
-                <triggered_effect trigger="onSelfBuffFinish" action="RemoveParticleEffectFromEntity" particle="RadiatedParticlesOnMesh" />
-                <triggered_effect trigger="onSelfBuffRemove" action="RemoveParticleEffectFromEntity" particle="RadiatedParticlesOnMesh" />
-                <triggered_effect trigger="onSelfLeaveGame" action="RemoveParticleEffectFromEntity" particle="RadiatedParticlesOnMesh" /> -->
-
-                <!-- <triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="solarpanel_on" /> -->
+                <triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="solarpanel_on" />
                 <triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="solarpanel_idle" />
                 <triggered_effect trigger="onSelfBuffRemove" action="FadeOutSound" sound="solarpanel_idle" />
                 <triggered_effect trigger="onSelfLeaveGame" action="StopSound" sound="solarpanel_idle" />
-
-                <!-- TODO: add journal entry here? -->
             </effect_group>
 
             <effect_group name="repurpose_jumping">
