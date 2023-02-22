@@ -23,10 +23,9 @@
             <display_value_key value="{0:0}" />
 
             <effect_group name="handle_sounds">
-                <triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="solarpanel_on" />
-                <triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="solarpanel_idle" />
-                <triggered_effect trigger="onSelfBuffRemove" action="FadeOutSound" sound="solarpanel_idle" />
-                <triggered_effect trigger="onSelfLeaveGame" action="StopSound" sound="solarpanel_idle" />
+                <triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="solarpanel_idle" play_in_head="true" />
+                <triggered_effect trigger="onSelfBuffRemove" action="FadeOutSound" sound="solarpanel_idle" play_in_head="true" />
+                <triggered_effect trigger="onSelfLeaveGame" action="StopSound" sound="solarpanel_idle" play_in_head="true" />
             </effect_group>
 
             <effect_group name="repurpose_jumping">
@@ -38,8 +37,8 @@
             </effect_group>
 
             <effect_group name="timer">
-                <triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$quantumElevatorTimer" operation="set" value="20" />
-                <triggered_effect trigger="onSelfBuffStack" action="ModifyCVar" cvar="$quantumElevatorTimer" operation="set" value="20" />
+                <triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$quantumElevatorTimer" operation="set" value="2" />
+                <triggered_effect trigger="onSelfBuffStack" action="ModifyCVar" cvar="$quantumElevatorTimer" operation="set" value="2" />
                 <triggered_effect trigger="onSelfBuffUpdate" action="ModifyCVar" cvar="$quantumElevatorTimer" operation="subtract" value="1" />
                 <triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" buff="inQuantumElevator">
                     <requirement name="CVarCompare" cvar="$quantumElevatorTimer" operation="LTE" value="0" />
@@ -48,31 +47,22 @@
             </effect_group>
         </buff>
 
-        <buff name="quantumElevatorCooldown" icon="ui_game_symbol_x" icon_color="255,0,127">
+        <buff name="quantumElevatorCooldown" hidden="true">
+            <duration value="0.2" />
+            <stack_type value="replace" />
+        </buff>
+
+        <buff name="quantumElevatorTopFloor" icon="ui_game_symbol_x" icon_color="255,0,127">
             <duration value="0.5" />
-            <stack_type value="replace" />
+            <stack_type value="ignore" />
             <display_value value="xxx" />
-            <display_value_key value="No Next Floor" />
+            <display_value_key value="Top Floor" />
         </buff>
-
-        <buff name="quantumElevatorGoingUp" icon="ui_game_symbol_enemy_dot_up" icon_color="0,127,255">
-            <duration value="1" />
-            <stack_type value="replace" />
-            <display_value value="quantumElevatorTargetElevation" />
-            <display_value_key value="{0:0}" />
-            <effect_group>
-                <triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="quantumElevatorGoingDown" />
-            </effect_group>
-        </buff>
-
-        <buff name="quantumElevatorGoingDown" icon="ui_game_symbol_enemy_dot_down" icon_color="0,127,255">
-            <duration value="1" />
-            <stack_type value="replace" />
-            <display_value value="quantumElevatorTargetElevation" />
-            <display_value_key value="{0:0}" />
-            <effect_group>
-                <triggered_effect trigger="onSelfBuffStart" action="RemoveBuff" buff="quantumElevatorGoingUp" />
-            </effect_group>
+        <buff name="quantumElevatorBottomFloor" icon="ui_game_symbol_x" icon_color="255,0,127">
+            <duration value="0.5" />
+            <stack_type value="ignore" />
+            <display_value value="xxx" />
+            <display_value_key value="Bottom Floor" />
         </buff>
 
         <buff name="notifyQuantumElevatorLocked" hidden="true">
@@ -82,7 +72,6 @@
                 <triggered_effect trigger="onSelfBuffStart" action="ShowToolbeltMessage" message_key="notifyQuantumElevatorLockedTooltip" sound="locked" />
             </effect_group>
         </buff>
-
         <buff name="notifyQuantumElevatorLockedWithPassword" hidden="true">
             <duration value="5.5" />
             <stack_type value="ignore" />
@@ -96,43 +85,6 @@
             <stack_type value="replace" />
             <update_rate value=".1" />
             <effect_group>
-                <!-- <triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="breakleg" />
-                <triggered_effect trigger="onSelfBuffRemove" action="PlaySound" sound="breakleg" />
-
-                <triggered_effect trigger="onSelfBuffStart" action="AttachParticleEffectToEntity" particle="p_onFire" shape_mesh="true" />
-                <triggered_effect trigger="onSelfBuffRemove" action="RemoveParticleEffectFromEntity" particle="p_onFire" />
-                <triggered_effect trigger="onSelfLeaveGame" action="RemoveParticleEffectFromEntity" particle="p_onFire" /> -->
-
-                <!-- parent_transform="Spine1" local_offset="0,-.2,0" -->
-                <!-- shape_mesh="true" -->
-                <!-- <triggered_effect trigger="onSelfBuffStart" action="AttachParticleEffectToEntity" particle="p_electric_shock" parent_transform="Spine1" local_offset="0,-.2,0" />
-                <triggered_effect trigger="onSelfDied" action="RemoveParticleEffectFromEntity" particle="p_electric_shock" />
-                <triggered_effect trigger="onSelfBuffFinish" action="RemoveParticleEffectFromEntity" particle="p_electric_shock" />
-                <triggered_effect trigger="onSelfBuffRemove" action="RemoveParticleEffectFromEntity" particle="p_electric_shock" />
-                <triggered_effect trigger="onSelfLeaveGame" action="RemoveParticleEffectFromEntity" particle="p_electric_shock" /> -->
-
-                <!-- local_offset="0,-.2,0" -->
-                <!-- shape_mesh="true" -->
-                <!-- AttachParticleEffectToEntity		target, particle, parent_transform, local_offset, local_rotation -->
-
-
-                <!-- 
-	AnimatorSetFloat:		target, property, value
-	AnimatorSetInt:		target, property, value ; change the animation / walk type
-	AnimatorSetBool:		target, property, value
-
-	ModifyScreenEffect:		target, effect_name, intensity, fade;   intensity=0 disables it
-        Shaders are in \Assets\Resources\ScreenEffects\Shaders
-
-    PlaySound:			target, sound, play_in_head;   sound references not a file name but a sound name from sounds.xml
-    sound can use wildcards. "#" is replaced by "1" (male) or "2" (female), "$" is replaced by "Male" or "female"
-        example: sound="player#painlg"
-    StopSound:			target, sound, play_in_head
-    FadeOutSound:			target, sound
-    ShakeCamera			shake_speed,shake_amplitude,shake_time?
-                -->
-
-
                 <triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="solarpanel_on" play_in_head="false" />
                 <triggered_effect trigger="onSelfBuffStack" action="PlaySound" sound="solarpanel_on" play_in_head="false" />
 
@@ -145,41 +97,6 @@
                 <triggered_effect trigger="onSelfBuffUpdate" action="RemoveBuff" buff="triggerQuantumJump">
                     <requirement name="!HasBuff" buff="inQuantumElevator" />
                 </triggered_effect>
-
-                <!-- <triggered_effect trigger="onSelfBuffStart" action="AttachParticleEffectToEntity" particle="p_big_smoke" parent_transform="Spine1" local_offset="0,-.2,0" />
-                <triggered_effect trigger="onSelfDied" action="RemoveParticleEffectFromEntity" particle="p_big_smoke" />
-                <triggered_effect trigger="onSelfBuffFinish" action="RemoveParticleEffectFromEntity" particle="p_big_smoke" />
-                <triggered_effect trigger="onSelfBuffRemove" action="RemoveParticleEffectFromEntity" particle="p_big_smoke" />
-                <triggered_effect trigger="onSelfLeaveGame" action="RemoveParticleEffectFromEntity" particle="p_big_smoke" /> -->
-
-                <!-- <triggered_effect trigger="onSelfLeaveGame" action="StopSound" sound="solarpanel_on" />
-                <triggered_effect trigger="onSelfBuffRemove" action="StopSound" sound="solarpanel_on" /> -->
-
-                <!-- <triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="solarpanel_on" />
-                <triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="solarpanel_idle" />
-                <triggered_effect trigger="onSelfBuffRemove" action="PlaySound" sound="solarpanel_off" />
-                <triggered_effect trigger="onSelfBuffRemove" action="FadeOutSound" sound="solarpanel_idle" />
-                <triggered_effect trigger="onSelfLeaveGame" action="StopSound" sound="solarpanel_idle" /> -->
-
-                <!-- <triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="electric_fence_impact" />
-                <triggered_effect trigger="onSelfBuffRemove" action="FadeOutSound" sound="electric_fence_impact" />
-                <triggered_effect trigger="onSelfLeaveGame" action="StopSound" sound="electric_fence_impact" /> -->
-
-                <!--                 
-                <SoundDataNode name="solarpanel_on"> <AudioSource name="Sounds/AudioSource_Interact"/>
-                    <Noise ID="1" noise="7" time="3" muffled_when_crouched="0.5"/>
-                    <AudioClip ClipName="Sounds/Electricity/SolarPanel/solarpanel_on"/>
-                    <LocalCrouchVolumeScale value="1.0"/> <CrouchNoiseScale value="0.5"/> <NoiseScale value="1"/> <MaxVoices value="10"/> <MaxRepeatRate value="0.01"/> </SoundDataNode>
-                
-                <SoundDataNode name="solarpanel_idle"> <AudioSource name="Sounds/AudioSource_Interact"/>
-                    <AudioClip ClipName="Sounds/Electricity/SolarPanel/solarpanel_idle_lp" Loop="true"/>
-                    <LocalCrouchVolumeScale value="1.0"/> <CrouchNoiseScale value="0.5"/> <NoiseScale value="1"/> <MaxVoices value="18"/> <MaxRepeatRate value="0.001"/> </SoundDataNode>
-                
-                <SoundDataNode name="solarpanel_off"> <AudioSource name="Sounds/AudioSource_Interact"/>
-                    <Noise ID="1" noise="7" time="3" muffled_when_crouched="0.5"/>
-                    <AudioClip ClipName="Sounds/Electricity/SolarPanel/solarpanel_off"/>
-                    <LocalCrouchVolumeScale value="1.0"/> <CrouchNoiseScale value="0.5"/> <NoiseScale value="1"/> <MaxVoices value="10"/> <MaxRepeatRate value="0.01"/> </SoundDataNode>
-                 -->
             </effect_group>
         </buff>
     </append>

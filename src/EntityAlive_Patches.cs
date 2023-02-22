@@ -33,7 +33,7 @@ namespace QuantumElevators
         {
             try
             {
-                if (CoreLogic.IsQuantumBlock(___blockValueStandingOn.Block.blockID) && __instance is EntityPlayer player)
+                if (IsQuantumBlock(___blockValueStandingOn.Block.blockID) && __instance is EntityPlayer player)
                 {
                     // update elevation for buff shown while player standing on block (informative, only)
                     player.SetCVar(CoreLogic.CVarTargetElevationName, Utils.Fastfloor(player.position.y));
@@ -66,7 +66,18 @@ namespace QuantumElevators
             }
         }
 
-        internal static PlayerState GetCurrentPlayerState(bool crouching, bool jumping)
+        /// <summary>
+        /// Determine if a given block id matches one of the quantum elevator blocks.
+        /// </summary>
+        /// <param name="blockId">The block id to check against.</param>
+        /// <returns>Whether this block id matches one of the quantum elevator blocks.</returns>
+        private static bool IsQuantumBlock(int blockId)
+        {
+            return blockId == ModApi.PortableQuantumBlockId
+                || blockId == ModApi.SecureQuantumBlockId;
+        }
+
+        private static PlayerState GetCurrentPlayerState(bool crouching, bool jumping)
         {
             return !crouching && !jumping ? PlayerState.Neutral : crouching ? PlayerState.Crouching : PlayerState.Jumping;
         }

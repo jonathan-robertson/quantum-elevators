@@ -26,7 +26,6 @@ namespace QuantumElevators
             var isServer = SingletonMonoBehaviour<ConnectionManager>.Instance.IsServer;
             if (!isServer)
             {
-                // TODO: GameManager.Instance == null || GameManager.Instance.World == null || GameManager.Instance.World.IsRemote()
                 _log.Warn("QuantumElevators is a host-side mod and is disabled when connecting to another player or dedicated server's world. To enjoy these features in remote worlds, the host will need to have this mod installed.");
             }
             return isServer;
