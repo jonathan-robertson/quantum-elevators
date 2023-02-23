@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - add buff showing elevation with control tips
 - add support for local players
 - allow elevator blocks to be stacked up to 5
+- finalize readme and journal entries
 - prevent repeated warps from held key
 - rename project
 - unlock crouch on warp in local games
