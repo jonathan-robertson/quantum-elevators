@@ -17,6 +17,8 @@
 
 7 Days to Die modlet: Add infinite distance, vertical-warp elevator panels.
 
+🔗 [Introductory video and demonstration of most features](https://youtu.be/fQPIQ9pdOrw)
+
 ### Support
 
 🗪 If you would like support for this mod, please feel free to reach out via [Discord](https://discord.gg/tRJHSB9Uk7).
