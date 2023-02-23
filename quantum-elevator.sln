@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumElevator", "QuantumElevator\QuantumElevator.csproj", "{4A6FE3D4-9718-4CAB-B215-5AE0C8245B33}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumElevators", "src\QuantumElevators.csproj", "{4A6FE3D4-9718-4CAB-B215-5AE0C8245B33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

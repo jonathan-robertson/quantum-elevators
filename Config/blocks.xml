@@ -7,60 +7,26 @@
             <property name="DisplayType" value="blockMulti" />
 
             <property name="CustomIcon" value="securityGatePlate" />
-            <!-- <property name="CustomIconTint" value="007fff" /> -->
-            <!-- TODO: might use map_player_arrow -->
             <property name="ItemTypeIcon" value="lock" />
             <property name="Map.Color" value="007fff" />
 
             <property name="Model" value="security_gate_plate" />
-            <!-- <property name="TintColor" value="007fff" /> -->
-
             <property name="ImposterExchange" value="imposterPlate" param1="144" />
             <property name="Group" value="Science" />
             <property name="SortOrder2" value="0050" />
 
-            <!-- non-class support -->
-            <!-- TODO: radius effects might work so long as the block has a TileEntity attached -->
-
-
-            <!-- <property name="Tags" value="door" />
-            <property name="BlockTag" value="Door" />
-            <property name="PlaceEverywhere" value="true" />
-            <property name="Place" value="Door" /> -->
-
             <property name="CanMobsSpawnOn" value="false" />
             <property name="CanPlayersSpawnOn" value="false" />
-
 
             <!-- don't let vehicle damage this -->
             <property name="VehicleHitScale" value=".1" />
 
-
             <!-- TODO: PickupJournalEntry -->
-
-
-            <!-- class support -->
 
             <!-- Sign -->
             <property name="Class" value="PlayerSign" />
             <property name="Place" value="TowardsPlacerInverted" />
 
-            <!-- BlockSecure -->
-            <!-- <property name="Class" value="SecureLoot" />
-                <property name="LootList" value="playerStorage" /> -->
-
-            <!-- PressurePlate class -->
-            <!-- <property name="Class" value="MotionSensor" />
-            <property name="RequiredPower" value="1" />
-            <property name="DisplayType" value="blockElectrical" />
-            <property name="CanPickup" value="false" />
-            <property name="TakeDelay" value="5" />
-            <property name="YawRange" value="1" />
-            <property name="PitchRange" value="1" />
-            <property name="FilterTags" value="MC_playerBlocks,SC_electrical,SC_traps" />
-            <property name="SortOrder1" value="70a0" /> -->
-
-            <!-- <property name="DisplayType" value="blockHardened"/> -->
             <property name="Texture" value="355,355,356,356,356,356" />
 
             <property class="RepairItems">
@@ -72,30 +38,14 @@
             <property name="CreativeMode" value="Player" />
             <property name="ImposterDontBlock" value="true" />
             <property name="StabilitySupport" value="false" />
-            <!-- TODO: set this to false? -->
+
             <property name="IsTerrainDecoration" value="true" />
             <property name="OnlySimpleRotations" value="true" />
 
-            <property name="Stacknumber" value="1" />
+            <property name="Stacknumber" value="5" />
             <property name="EconomicValue" value="2100" />
 
             <property name="BuffsWhenWalkedOn" value="triggerQuantumElevator" />
-            <!-- 
-            <property name="Class" value="Activate"/>
-            <property name="Class" value="ActivateSingle"/>
-            <property name="Class" value="ActivateSwitch"/>
-            <property name="Class" value="BladeTrap"/>
-            <property name="Class" value="DoorSecure"/>
-            <property name="Class" value="Launcher"/>
-            <property name="Class" value="Light"/>
-            <property name="Class" value="MotionSensor"/>
-            <property name="Class" value="PoweredLight"/>
-            <property name="Class" value="PressurePlate"/>
-            <property name="Class" value="Ranged"/>
-            <property name="Class" value="SecureLoot"/>
-            <property name="Class" value="TimerRelay"/>
-            <property name="Class" value="TrapDoor" />
-             -->
         </block>
         <block name="quantumElevatorBlockPortable">
             <property name="Extends" value="securityGatePlate" />
@@ -104,60 +54,27 @@
             <property name="DisplayType" value="blockMulti" />
 
             <property name="CustomIcon" value="securityGatePlate" />
-            <!-- <property name="CustomIconTint" value="007fff" /> -->
-            <!-- TODO: might use map_player_arrow -->
             <property name="ItemTypeIcon" value="hand" />
             <property name="Map.Color" value="007fff" />
 
             <property name="Model" value="security_gate_plate" />
-            <!-- <property name="TintColor" value="007fff" /> -->
 
             <property name="ImposterExchange" value="imposterPlate" param1="144" />
             <property name="Group" value="Science" />
             <property name="SortOrder2" value="0050" />
 
-            <!-- non-class support -->
-            <!-- TODO: radius effects might work so long as the block has a TileEntity attached -->
-
-
-            <!-- <property name="Tags" value="door" />
-            <property name="BlockTag" value="Door" />
-            <property name="PlaceEverywhere" value="true" />
-            <property name="Place" value="Door" /> -->
-
             <property name="CanMobsSpawnOn" value="false" />
             <property name="CanPlayersSpawnOn" value="false" />
-
 
             <!-- don't let vehicle damage this -->
             <property name="VehicleHitScale" value=".1" />
 
 
             <!-- TODO: PickupJournalEntry -->
-
-
-            <!-- class support -->
-
-            <!-- Sign -->
-            <!-- <property name="Class" value="PlayerSign" /> -->
             <property name="Place" value="TowardsPlacerInverted" />
 
-            <!-- BlockSecure -->
-            <!-- <property name="Class" value="SecureLoot" />
-                <property name="LootList" value="playerStorage" /> -->
-
-            <!-- PressurePlate class -->
-            <!-- <property name="Class" value="MotionSensor" />
-            <property name="RequiredPower" value="1" />
-            <property name="DisplayType" value="blockElectrical" />
-            <property name="TakeDelay" value="5" />
-            <property name="YawRange" value="1" />
-            <property name="PitchRange" value="1" />
-            <property name="FilterTags" value="MC_playerBlocks,SC_electrical,SC_traps" />
-            <property name="SortOrder1" value="70a0" /> -->
             <property name="CanPickup" value="true" />
 
-            <!-- <property name="DisplayType" value="blockHardened"/> -->
             <property name="Texture" value="355,355,356,356,356,356" />
 
             <property class="RepairItems">
@@ -169,30 +86,13 @@
             <property name="CreativeMode" value="Player" />
             <property name="ImposterDontBlock" value="true" />
             <property name="StabilitySupport" value="false" />
-            <!-- TODO: set this to false? -->
             <property name="IsTerrainDecoration" value="true" />
             <property name="OnlySimpleRotations" value="true" />
 
-            <property name="Stacknumber" value="1" />
+            <property name="Stacknumber" value="5" />
             <property name="EconomicValue" value="1700" />
 
             <property name="BuffsWhenWalkedOn" value="triggerQuantumElevator" />
-            <!-- 
-            <property name="Class" value="Activate"/>
-            <property name="Class" value="ActivateSingle"/>
-            <property name="Class" value="ActivateSwitch"/>
-            <property name="Class" value="BladeTrap"/>
-            <property name="Class" value="DoorSecure"/>
-            <property name="Class" value="Launcher"/>
-            <property name="Class" value="Light"/>
-            <property name="Class" value="MotionSensor"/>
-            <property name="Class" value="PoweredLight"/>
-            <property name="Class" value="PressurePlate"/>
-            <property name="Class" value="Ranged"/>
-            <property name="Class" value="SecureLoot"/>
-            <property name="Class" value="TimerRelay"/>
-            <property name="Class" value="TrapDoor" />
-             -->
         </block>
     </append>
 </config>

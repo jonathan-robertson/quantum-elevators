@@ -7,8 +7,8 @@
     <ProjectGuid>{4A6FE3D4-9718-4CAB-B215-5AE0C8245B33}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>QuantumElevator</RootNamespace>
-    <AssemblyName>QuantumElevator</AssemblyName>
+    <RootNamespace>QuantumElevators</RootNamespace>
+    <AssemblyName>QuantumElevators</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\References\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\References\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
@@ -58,13 +62,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModAPI.cs" />
+    <Compile Include="ConsoleCmdQuantumElevators.cs" />
+    <Compile Include="CoreLogic.cs" />
+    <Compile Include="EntityAlive_Patches.cs" />
+    <Compile Include="ModApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Components\TransportationServices.cs" />
-    <Compile Include="Utilities\MessagingSystem.cs" />
-    <Compile Include="Utilities\ModLog.cs" />
-    <Compile Include="Components\QuantumCache.cs" />
+    <Compile Include="ModLog.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

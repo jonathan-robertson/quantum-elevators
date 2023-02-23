@@ -1,9 +1,9 @@
 <xml>
     <ModInfo>
-        <Name value="Quantum Elevator" />
-        <Description value="A server-side elevator mod." />
+        <Name value="Quantum Elevators" />
+        <Description value="Add infinite distance, vertical-warp elevator panels." />
         <Author value="Jonathan Robertson (Kanaverum)" />
-        <Version value="0.1.0" />
-        <Website value="https://github.com/jonathan-robertson/quantum-elevator" />
+        <Version value="1.0.0" />
+        <Website value="https://github.com/jonathan-robertson/quantum-elevators" />
     </ModInfo>
 </xml>
