@@ -9,6 +9,7 @@ namespace QuantumElevators
         private static readonly ModLog<ModApi> _log = new ModLog<ModApi>();
 
         public static bool DebugMode { get; set; } = false;
+        public static bool IsServer { get; private set; } = false;
         internal static int SecureQuantumBlockId { get; set; } = 0;
         internal static int PortableQuantumBlockId { get; set; } = 0;
 
@@ -21,24 +22,21 @@ namespace QuantumElevators
             ModEvents.GameStartDone.RegisterHandler(OnGameStartDone);
         }
 
-        internal bool IsServer()
-        {
-            var isServer = SingletonMonoBehaviour<ConnectionManager>.Instance.IsServer;
-            if (!isServer)
-            {
-                _log.Warn("QuantumElevators is a host-side mod and is disabled when connecting to another player or dedicated server's world. To enjoy these features in remote worlds, the host will need to have this mod installed.");
-            }
-            return isServer;
-        }
-
         private void OnGameStartDone()
         {
             try
             {
-                if (IsServer())
+                IsServer = SingletonMonoBehaviour<ConnectionManager>.Instance.IsServer;
+                if (IsServer)
                 {
+                    _log.Info("QuantumElevators recognizes you as the host, so it will begin managing player positions.");
                     SecureQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockSecure");
                     PortableQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockPortable");
+                    _log.Info($"PortableQuantumBlockId={PortableQuantumBlockId}; SecureQuantumBlockId={SecureQuantumBlockId}");
+                }
+                else
+                {
+                    _log.Warn("QuantumElevators recognizes you as a client, so this locally installed mod will be inactive until you host a game.");
                 }
             }
             catch (Exception e)
