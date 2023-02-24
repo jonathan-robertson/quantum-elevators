@@ -33,7 +33,7 @@ namespace QuantumElevators
         {
             try
             {
-                if (IsQuantumBlock(___blockValueStandingOn.Block.blockID) && __instance is EntityPlayer player)
+                if (ModApi.IsServer && IsQuantumBlock(___blockValueStandingOn.Block.blockID) && __instance is EntityPlayer player)
                 {
                     // update elevation for buff shown while player standing on block (informative, only)
                     player.SetCVar(CoreLogic.CVarTargetElevationName, Utils.Fastfloor(player.position.y));
