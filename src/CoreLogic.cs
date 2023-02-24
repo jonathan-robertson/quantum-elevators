@@ -130,7 +130,15 @@ namespace QuantumElevators
                 if (crowd[i].entityType == EntityType.Player && crowd[i].isEntityRemote)
                 {
                     _log.Debug("remote player");
-                    ConnectionManager.Instance.SendPackage(NetPackageManager.GetPackage<NetPackageTeleportPlayer>().Setup(newPos, crowd[i].rotation, true));
+
+                    if (TryGetClientInfo(crowd[i].entityId, out var clientInfo))
+                    {
+                        clientInfo.SendPackage(NetPackageManager.GetPackage<NetPackageTeleportPlayer>().Setup(newPos, crowd[i].rotation, true));
+                    }
+                    else
+                    {
+                        _log.Debug($"server thinks entity {crowd[i].entityId} being pushed is a player, but couldn't find a client connection for it... could've been due to player disconnection at *just* the right time... still strange.");
+                    }
                 }
                 else
                 {

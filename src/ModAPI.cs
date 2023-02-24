@@ -8,7 +8,7 @@ namespace QuantumElevators
     {
         private static readonly ModLog<ModApi> _log = new ModLog<ModApi>();
 
-        public static bool DebugMode { get; set; } = false;
+        public static bool DebugMode { get; set; } = true; // TODO: set back to false
         public static bool IsServer { get; private set; } = false;
         internal static int SecureQuantumBlockId { get; set; } = 0;
         internal static int PortableQuantumBlockId { get; set; } = 0;
@@ -30,8 +30,19 @@ namespace QuantumElevators
                 if (IsServer)
                 {
                     _log.Info("QuantumElevators recognizes you as the host, so it will begin managing player positions.");
-                    SecureQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockSecure");
-                    PortableQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockPortable");
+                    //SecureQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockSecure");
+                    //PortableQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockPortable");
+
+                    /* TODO: recommendation from OC; use the basic calls to help keep things compatible with future releases and 
+                     *   to reduce complexity or opportunity for game-related errors.
+                     *   
+                     *  Block block = Block.GetBlockByName("QuantumBlock");
+                        if (block != null)
+                        {
+                            staticIntOne = block.blockID;
+                        }
+                    also... if you try double-jumping (press jump key while in the air) and holding the jump key when *not* on a panel, do you suddenly see the yellow-green particle effect and/or hear the warp sound briefly?
+                     */
                     _log.Info($"PortableQuantumBlockId={PortableQuantumBlockId}; SecureQuantumBlockId={SecureQuantumBlockId}");
                 }
                 else
