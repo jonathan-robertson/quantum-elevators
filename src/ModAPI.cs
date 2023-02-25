@@ -8,6 +8,9 @@ namespace QuantumElevators
     {
         private static readonly ModLog<ModApi> _log = new ModLog<ModApi>();
 
+        private static readonly string ModMaintainer = "Kanaverum#8183";
+        private static readonly string SupportLink = "https://discord.gg/tRJHSB9Uk7";
+
         public static bool DebugMode { get; set; } = false;
         public static bool IsServer { get; private set; } = false;
         internal static int SecureQuantumBlockId { get; set; } = 0;
@@ -30,6 +33,20 @@ namespace QuantumElevators
                 if (IsServer)
                 {
                     _log.Info("QuantumElevators recognizes you as the host, so it will begin managing player positions.");
+
+                    _log.Info("Attempting to load block IDs for QuantumElevators.");
+                    var quantumElevatorBlockSecure = Block.GetBlockByName("quantumElevatorBlockSecure");
+                    var quantumElevatorBlockPortable = Block.GetBlockByName("quantumElevatorBlockPortable");
+                    if (quantumElevatorBlockSecure != null && quantumElevatorBlockPortable != null)
+                    {
+                        SecureQuantumBlockId = quantumElevatorBlockSecure.blockID;
+                        PortableQuantumBlockId = quantumElevatorBlockPortable.blockID;
+                        _log.Info($"PortableQuantumBlockId={PortableQuantumBlockId}; SecureQuantumBlockId={SecureQuantumBlockId}");
+                    }
+                    else
+                    {
+                        _log.Error($"PortableQuantumBlockId=FAILURE; SecureQuantumBlockId=FAILURE; restarting the server will be necessary to fix this - please reach out to the mod maintainer {ModMaintainer} via {SupportLink}");
+                    }
                 }
                 else
                 {
