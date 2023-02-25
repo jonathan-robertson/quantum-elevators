@@ -12,7 +12,7 @@ namespace QuantumElevators
     internal class CoreLogic
     {
         private static readonly ModLog<CoreLogic> _log = new ModLog<CoreLogic>();
-        private static readonly Vector3 _single = new Vector3(1, 3, 1);
+        private static readonly Vector3 _single = new Vector3(1, 2, 1);
         private static readonly List<Vector3i> _possibleDirections = new List<Vector3i> { Vector3i.left, Vector3i.right, Vector3i.forward, Vector3i.back };
 
         #region buff name references
@@ -487,11 +487,7 @@ targetBlockPos.pass:{target.GetPassword()}");
         /// <returns>List of entities currently within the provided block position.</returns>
         private static List<EntityAlive> GetEntitiesAt(Vector3i blockPos)
         {
-            // TODO: These bounds look weird - too tall:
-            // BOUNDS SET: (760.0, 36.0, -1124.0), (761.0, 39.0, -1123.0)
-            // this is for elevation 37
-            // it isn't too high (surprise!) but it definitely is too low - such that you can stand under the panel and you will be pushed
-            var adjustedCenter = blockPos.ToVector3Center();
+            var adjustedCenter = new Vector3(blockPos.x + 0.5f, blockPos.y + 1f, blockPos.z + 0.5f);
             var bounds = new Bounds(adjustedCenter, _single);
             _log.Debug($"BOUNDS SET: {bounds.min}, {bounds.max}");
 
