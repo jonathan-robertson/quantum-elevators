@@ -39,7 +39,7 @@
             <property name="ImposterDontBlock" value="true" />
             <property name="StabilitySupport" value="false" />
 
-            <property name="IsTerrainDecoration" value="true" />
+            <property name="IsTerrainDecoration" value="false" />
             <property name="OnlySimpleRotations" value="true" />
 
             <property name="Stacknumber" value="5" />
@@ -86,7 +86,7 @@
             <property name="CreativeMode" value="Player" />
             <property name="ImposterDontBlock" value="true" />
             <property name="StabilitySupport" value="false" />
-            <property name="IsTerrainDecoration" value="true" />
+            <property name="IsTerrainDecoration" value="false" />
             <property name="OnlySimpleRotations" value="true" />
 
             <property name="Stacknumber" value="5" />
