@@ -30,9 +30,6 @@ namespace QuantumElevators
                 if (IsServer)
                 {
                     _log.Info("QuantumElevators recognizes you as the host, so it will begin managing player positions.");
-                    SecureQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockSecure");
-                    PortableQuantumBlockId = Block.nameIdMapping.GetIdForName("quantumElevatorBlockPortable");
-                    _log.Info($"PortableQuantumBlockId={PortableQuantumBlockId}; SecureQuantumBlockId={SecureQuantumBlockId}");
                 }
                 else
                 {

@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2023-02-24
+
+- fix block id -1 bug
+- fix push bounding box
+- fix push warping all players bug
+- update push console command for ease of use
+- update push to no longer eject onto air
+
 ## [1.0.2] - 2023-02-23
 
 - fix error with client-side mod firing in server

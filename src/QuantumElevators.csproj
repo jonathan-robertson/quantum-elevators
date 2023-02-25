@@ -65,6 +65,7 @@
     <Compile Include="ConsoleCmdQuantumElevators.cs" />
     <Compile Include="CoreLogic.cs" />
     <Compile Include="EntityAlive_Patches.cs" />
+    <Compile Include="WorldStaticData_Patches.cs" />
     <Compile Include="ModApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ModLog.cs" />

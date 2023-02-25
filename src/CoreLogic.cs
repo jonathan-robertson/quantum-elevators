@@ -12,7 +12,7 @@ namespace QuantumElevators
     internal class CoreLogic
     {
         private static readonly ModLog<CoreLogic> _log = new ModLog<CoreLogic>();
-        private static readonly Vector3 _single = new Vector3(1, 3, 1);
+        private static readonly Vector3 _single = new Vector3(1, 2, 1);
         private static readonly List<Vector3i> _possibleDirections = new List<Vector3i> { Vector3i.left, Vector3i.right, Vector3i.forward, Vector3i.back };
 
         #region buff name references
@@ -103,7 +103,6 @@ namespace QuantumElevators
             var offsets = FindOffsets(blockPos);
             _log.Debug($"found {offsets.Count} possible offsets");
 
-            // TODO: should this be a static reference, or is it ok to ref it each time? 
             var rand = GameManager.Instance.World.GetGameRandom();
 
             var blockCenter = blockPos.ToVector3Center();
@@ -130,7 +129,15 @@ namespace QuantumElevators
                 if (crowd[i].entityType == EntityType.Player && crowd[i].isEntityRemote)
                 {
                     _log.Debug("remote player");
-                    ConnectionManager.Instance.SendPackage(NetPackageManager.GetPackage<NetPackageTeleportPlayer>().Setup(newPos, crowd[i].rotation, true));
+
+                    if (TryGetClientInfo(crowd[i].entityId, out var clientInfo))
+                    {
+                        clientInfo.SendPackage(NetPackageManager.GetPackage<NetPackageTeleportPlayer>().Setup(newPos, crowd[i].rotation, true));
+                    }
+                    else
+                    {
+                        _log.Debug($"server thinks entity {crowd[i].entityId} being pushed is a player, but couldn't find a client connection for it... could've been due to player disconnection at *just* the right time... still strange.");
+                    }
                 }
                 else
                 {
@@ -443,7 +450,7 @@ targetBlockPos.pass:{target.GetPassword()}");
             {
                 var targetPos = position + _possibleDirections[i];
                 _log.Debug($"Checking {targetPos}");
-                if (CanMoveTo(targetPos, true, true))
+                if (CanMoveTo(targetPos))
                 {
                     _log.Debug($"Can move to {targetPos}");
                     validOffsets.Add(_possibleDirections[i]);
@@ -479,7 +486,7 @@ targetBlockPos.pass:{target.GetPassword()}");
         /// <returns>List of entities currently within the provided block position.</returns>
         private static List<EntityAlive> GetEntitiesAt(Vector3i blockPos)
         {
-            var adjustedCenter = blockPos.ToVector3Center();
+            var adjustedCenter = new Vector3(blockPos.x + 0.5f, blockPos.y + 1f, blockPos.z + 0.5f);
             var bounds = new Bounds(adjustedCenter, _single);
             _log.Debug($"BOUNDS SET: {bounds.min}, {bounds.max}");
 
