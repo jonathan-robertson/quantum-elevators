@@ -451,7 +451,7 @@ targetBlockPos.pass:{target.GetPassword()}");
             {
                 var targetPos = position + _possibleDirections[i];
                 _log.Debug($"Checking {targetPos}");
-                if (CanMoveTo(targetPos, true, true))
+                if (CanMoveTo(targetPos))
                 {
                     _log.Debug($"Can move to {targetPos}");
                     validOffsets.Add(_possibleDirections[i]);
@@ -487,6 +487,10 @@ targetBlockPos.pass:{target.GetPassword()}");
         /// <returns>List of entities currently within the provided block position.</returns>
         private static List<EntityAlive> GetEntitiesAt(Vector3i blockPos)
         {
+            // TODO: These bounds look weird - too tall:
+            // BOUNDS SET: (760.0, 36.0, -1124.0), (761.0, 39.0, -1123.0)
+            // this is for elevation 37
+            // it isn't too high (surprise!) but it definitely is too low - such that you can stand under the panel and you will be pushed
             var adjustedCenter = blockPos.ToVector3Center();
             var bounds = new Bounds(adjustedCenter, _single);
             _log.Debug($"BOUNDS SET: {bounds.min}, {bounds.max}");
