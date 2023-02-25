@@ -103,7 +103,6 @@ namespace QuantumElevators
             var offsets = FindOffsets(blockPos);
             _log.Debug($"found {offsets.Count} possible offsets");
 
-            // TODO: should this be a static reference, or is it ok to ref it each time? 
             var rand = GameManager.Instance.World.GetGameRandom();
 
             var blockCenter = blockPos.ToVector3Center();
