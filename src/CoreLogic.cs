@@ -72,7 +72,11 @@ namespace QuantumElevators
                 else if (TryGetClientInfo(player.entityId, out var clientInfo))
                 {
                     _log.Debug($"planning to teleport {player} to {player.position} soon");
-                    _ = player.Buffs.AddBuff(BuffTriggerJumpName); // for visuals & sound-effects
+                    var buffStatus = player.Buffs.AddBuff(BuffTriggerJumpName); // for visuals & sound-effects
+                    if (buffStatus != EntityBuffs.BuffStatus.Added)
+                    {
+                        _log.Warn($"Failed to apply buff {BuffTriggerJumpName} to player {player} due to buffStatus response of {buffStatus}");
+                    }
                     if (crowdWasAtPanel)
                     {
                         _ = ThreadManager.StartCoroutine(WarpRemotePlayerLater(clientInfo, player, destinationCenter));

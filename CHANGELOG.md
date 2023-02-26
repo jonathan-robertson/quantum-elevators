@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [UNRELEASED] - ?
 
+- add conf check when applying warp effects buff
 - fix error log interpolation
 - remove unnecessary particle rotation reference
 
