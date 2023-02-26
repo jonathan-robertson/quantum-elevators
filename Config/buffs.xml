@@ -88,7 +88,7 @@
                 <triggered_effect trigger="onSelfBuffStart" action="PlaySound" sound="solarpanel_on" play_in_head="false" />
                 <triggered_effect trigger="onSelfBuffStack" action="PlaySound" sound="solarpanel_on" play_in_head="false" />
 
-                <triggered_effect local_rotation="90,0,0" trigger="onSelfBuffStart" action="AttachParticleEffectToEntity" particle="RadiatedParticlesOnMesh" parent_transform="LOD0" shape_mesh="true" />
+                <triggered_effect trigger="onSelfBuffStart" action="AttachParticleEffectToEntity" particle="RadiatedParticlesOnMesh" shape_mesh="true" />
                 <triggered_effect trigger="onSelfDied" action="RemoveParticleEffectFromEntity" particle="RadiatedParticlesOnMesh" />
                 <triggered_effect trigger="onSelfBuffFinish" action="RemoveParticleEffectFromEntity" particle="RadiatedParticlesOnMesh" />
                 <triggered_effect trigger="onSelfBuffRemove" action="RemoveParticleEffectFromEntity" particle="RadiatedParticlesOnMesh" />

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [UNRELEASED] - ?
 
 - fix error log interpolation
+- remove unnecessary particle rotation reference
 
 ## [1.1.1] - 2023-02-24
 
