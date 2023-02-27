@@ -12,6 +12,7 @@
     - [Secure Quantum Elevator panels](#secure-quantum-elevator-panels)
   - [Compatibility](#compatibility)
   - [Admin Commands](#admin-commands)
+  - [Acknowledgements](#acknowledgements)
 
 ## Summary
 
@@ -71,3 +72,13 @@ primary | alternate | params | description
 quantumelevators | qe | N/A | enable/disable debug logging for this mod (disabled by default)
 
 *Note that leaving debug mode on can have a negative impact on performance. It is therefore recommended to only turn it on while troubleshooting and then disable it afterwards.*
+
+## Acknowledgements
+
+Several people in the community have offered feedback, identified bugs, and have worked to provide me with debug logs to help move this project forward. Quantum Elevators is a cool idea and has been a lot of fun to work on, but would not be what it is today without the added effort from these incredible admins, modders, and players. *(Discord Usernames)*
+
+- `Shavick#8511` performed early testing and identified various issues that arose when client and server were both running the mod.
+- `Grandpa Minion#2643` and the NAPVP Community who helped with hardcore testing and several bug reports.
+- `Blight#7410` of Pimp my House, Tea Lounge, Juggernaut, and Ragnarok submitted bug reports that helped identify and resolve a critical bug.
+- `O C#2804` reviewed and offered suggestions and advice that led to the resolution of a critical bug.
+- `vivo#0815` identified how to recreate a bug that occurred only on initial launch of a new map.
