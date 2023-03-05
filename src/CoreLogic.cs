@@ -244,36 +244,43 @@ namespace QuantumElevators
         {
             if (CanAccess(internalId, target, out var targetHasPassword))
             {
+                _log.Debug($"CAN ACCESS because: player {internalId} already has permission to the target panel.");
                 return true;
-            } // targetBlockPos is locked and entityPlayer doesn't have access
-            if (!targetHasPassword
-                || source == null
-                || !source.IsLocked()
-                || !source.HasPassword())
+            } // so target is locked and entityPlayer isn't already registered as an authorized user
+            if (!targetHasPassword)
             {
-                _log.Debug($"CANNOT ACCESS because: !targetHasPassword ({!targetHasPassword}) || source == null({source == null}) || !source.IsLocked()({!source.IsLocked()}) || !source.HasPassword()({!source.HasPassword()})");
+                _log.Debug("CANNOT ACCESS because: target does not have a password.");
                 return false;
-            } // source and targetBlockPos have passwords, source is locked
-            if (source.GetOwner().Equals(target.GetOwner())
-                && source.GetPassword().Equals(target.GetPassword()))
+            } // so target does have a password set
+            if (source == null)
             {
-                _log.Debug($"CAN ACCESS because: source.GetOwner() == targetBlockPos.GetOwner()({source.GetOwner() == target.GetOwner()}) && source.GetPassword() == targetBlockPos.GetPassword()({source.GetPassword() == target.GetPassword()})");
-                target.GetUsers().Add(internalId); // dynamically register this user to targetBlockPos!
-                target.SetModified();
-                return true;
-            } // source/targetBlockPos owners or passwords don't match=
-            _log.Debug($@"CANNOT ACCESS because: source.GetOwner() != targetBlockPos.GetOwner() || source.GetPassword() != targetBlockPos.GetPassword()
-source.owner:
-    CombinedString:{source.GetOwner().CombinedString}
-    PlatformIdentifierString:{source.GetOwner().PlatformIdentifierString}
-    ReadablePlatformUserIdentifier:{source.GetOwner().ReadablePlatformUserIdentifier}
-targetBlockPos.owner:
-    CombinedString:{target.GetOwner().CombinedString}
-    PlatformIdentifierString:{target.GetOwner().PlatformIdentifierString}
-    ReadablePlatformUserIdentifier:{target.GetOwner().ReadablePlatformUserIdentifier}
-source.pass:{source.GetPassword()}
-targetBlockPos.pass:{target.GetPassword()}");
-            return false;
+                _log.Debug("CANNOT ACCESS because: source is a portable panel, which we cannot apply a password from.");
+                return false;
+            } // so source is not a portable panel and might have a password for us to apply to target
+            if (!source.IsLocked())
+            {
+                _log.Debug("CANNOT ACCESS because: source is not locked, so we know it does NOT have a password we could try applying to target.");
+                return false;
+            } // so source is locked
+            if (!source.HasPassword())
+            {
+                _log.Debug("CANNOT ACCESS because: source is locked but has no password, so we have no password to try applying to target.");
+                return false;
+            } // so source and target each have passwords and we might be able to apply the password from source to target
+            if (!source.GetOwner().Equals(target.GetOwner()))
+            {
+                _log.Debug("CANNOT ACCESS because: source owner does not match target owner, so a password cannot be applied to target even if it matches.");
+                return false;
+            } // so source and target have the same owners...
+            if (!source.GetPassword().Equals(target.GetPassword()))
+            {
+                _log.Debug("CANNOT ACCESS because: source and target do not share the same password.");
+                return false;
+            } // so source and target share the same password...
+            _log.Debug("CAN ACCESS because: source panel shares owner and password with target panel.");
+            target.GetUsers().Add(internalId); // dynamically register this user to targetBlockPos
+            target.SetModified();
+            return true;
         }
 
         /// <summary>
