@@ -62,7 +62,7 @@ namespace QuantumElevators
             }
             catch (Exception e)
             {
-                _log.Error("EntityAlive_updateCurrentBlockPosAndValue_Patches Postfix failed: handle block pos change for {__instance}.", e);
+                _log.Error($"EntityAlive_updateCurrentBlockPosAndValue_Patches Postfix failed: handle block pos change for {__instance}.", e);
             }
         }
 
