@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("QuantumElevators")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("HP")]
+[assembly: AssemblyCompany("Jonathan Robertson")]
 [assembly: AssemblyProduct("QuantumElevators")]
-[assembly: AssemblyCopyright("Copyright © HP 2022")]
+[assembly: AssemblyCopyright("Copyright © Jonathan Robertson 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
