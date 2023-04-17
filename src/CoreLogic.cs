@@ -192,7 +192,7 @@ namespace QuantumElevators
         {
             if (blockValue.Block.blockID == ModApi.PortableQuantumBlockId)
             {
-                _log.Debug($"{player.GetBlockPosition()} contains a PortableQuantumBlock; premission is always granted");
+                _log.Debug($"{player.GetBlockPosition()} contains a PortableQuantumBlock; permission is always granted");
                 secureTileEntity = null;
                 return true;
             }
@@ -306,18 +306,15 @@ namespace QuantumElevators
         /// <returns>Whether a quantum elevator block above the sourcePos can be warped to.</returns>
         private static bool TryGetFloorAbove(PlatformUserIdentifierAbs internalId, Vector3i sourcePos, BlockValue sourceBlockValue, TileEntitySign source, out Vector3i targetPos)
         {
-            _log.Debug("calling TryGetFloorAbove");
-            targetPos = sourcePos;
+            _log.Trace("calling TryGetFloorAbove");
             var clrId = GameManager.Instance.World.ChunkCache.ClusterIdx;
-            // confirm if 256 is the right place to stop
 
-            _log.Debug($"planning to look above, starting at {targetPos}");
+            var crawlerPos = sourcePos;
             BlockValue targetBlockValue;
-            for (targetPos.y += GetBlockHeight(sourceBlockValue); targetPos.y < 256; targetPos.y += GetBlockHeight(targetBlockValue))
+            _log.Debug($"planning to look above, starting from {crawlerPos}");
+            for (crawlerPos.y += GetBlockHeight(sourceBlockValue); crawlerPos.y < 253; crawlerPos.y += GetBlockHeight(targetBlockValue))
             {
-                targetBlockValue = GetBaseBlockPositionAndValue(targetPos, out targetPos);
-                _log.Debug($"now checking {targetPos}");
-
+                targetBlockValue = GetBaseBlockPositionAndValue(crawlerPos, out targetPos);
                 if (targetBlockValue.Block.blockID == ModApi.PortableQuantumBlockId)
                 {
                     _log.Debug($"found the next accessible (portable) elevator at {targetPos} can be accessed");
@@ -341,7 +338,8 @@ namespace QuantumElevators
                 }
             }
 
-            _log.Debug($"no elevator was found below");
+            _log.Trace($"no elevator was found below");
+            targetPos = default;
             return false;
         }
 
@@ -355,13 +353,13 @@ namespace QuantumElevators
         /// <returns>Whether a quantum elevator block above the sourcePos can be warped to.</returns>
         private static bool TryGetFloorBelow(PlatformUserIdentifierAbs internalId, Vector3i sourcePos, TileEntitySign source, out Vector3i targetPos)
         {
-            _log.Debug("calling TryGetFloorBelow");
-            targetPos = sourcePos;
-            for (targetPos.y--; targetPos.y > 1; targetPos.y--)
+            _log.Trace("calling TryGetFloorBelow");
+            var crawlerPos = sourcePos;
+            BlockValue targetBlockValue;
+            _log.Debug($"planning to look below, starting from {crawlerPos}");
+            for (crawlerPos.y--; crawlerPos.y > 1; crawlerPos.y -= GetBlockHeight(targetBlockValue))
             {
-                var targetBlockValue = GetBaseBlockPositionAndValue(targetPos, out targetPos);
-                _log.Debug($"checking {targetPos} ({Block.nameIdMapping.GetNameForId(targetBlockValue.Block.blockID)})");
-
+                targetBlockValue = GetBaseBlockPositionAndValue(crawlerPos, out targetPos);
                 if (ModApi.PortableQuantumBlockId == targetBlockValue.Block.blockID)
                 {
                     _log.Debug($"found the next accessible (portable) elevator at {targetPos} can be accessed");
@@ -376,7 +374,8 @@ namespace QuantumElevators
                 }
             }
 
-            _log.Debug($"no elevator was found below");
+            _log.Trace($"no elevator was found below");
+            targetPos = default;
             return false;
         }
 
@@ -404,20 +403,29 @@ namespace QuantumElevators
         /// <returns>The block value found at the given position.</returns>
         private static BlockValue GetBaseBlockPositionAndValue(Vector3i pos, out Vector3i blockPosition)
         {
+            _log.Trace($"GetBaseBlockPositionAndValue at position {pos}");
             blockPosition = pos;
-            _log.Debug($"GetBaseBlockPositionAndValue at position {pos}");
+
             var blockValue = GameManager.Instance.World.ChunkCache.GetBlock(pos);
-            if (blockValue.ischild)
+            var blockId = blockValue.Block.blockID;
+            _log.Trace($"blockId: {blockId}");
+            var blockName = blockId == 0 
+                ? "air" 
+                : Block.nameIdMapping != null 
+                    ? Block.nameIdMapping.GetNameForId(blockValue.Block.blockID) 
+                    : "no name mapping";
+            _log.Debug($"Identified block: id=[{blockId}], name=[{blockName}].");
+
+            var isChild = blockValue.ischild;
+            _log.Debug($"block: {blockValue}, isChild? {isChild}{(isChild ? ", parent:" + blockValue.parent : "")}");
+            if (isChild)
             {
-                _log.Debug($"Block found is a multi-block; self: {blockValue}, isChild? {blockValue.ischild}, parent: {blockValue.parent}");
-                _log.Debug($">> parentY: {blockValue.parenty}");
-                blockPosition.y += blockValue.parenty;
+                var parentY = blockValue.parenty;
+                _log.Debug($">> parentY: {parentY}");
+                blockPosition.y += parentY;
+                _log.Debug($"parent/tile position determined to be at {blockPosition}");
                 // NOTE: block value will be the same; leaving note here in case we ever find a way to make compound blocks
                 // blockValueBody = GameManager.Instance.World.GetBlock(blockPosition);
-            }
-            else
-            {
-                _log.Debug($"Block found is not a multi-block; self: {blockValue}, isChild? {blockValue.ischild}");
             }
             return blockValue;
         }

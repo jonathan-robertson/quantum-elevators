@@ -5,6 +5,122 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Above
+
+```log
+2023-04-16T19:42:10 136.014 INF [QuantumElevators.CoreLogic] DEBUG: -2, 62, -55 contains a PortableQuantumBlock; permission is always granted
+2023-04-16T19:42:10 136.014 INF [QuantumElevators.CoreLogic] TRACE: calling TryGetFloorAbove
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] TRACE: planning to look above, starting at -2, 62, -55
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: height of focused block is 2
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: GetBaseBlockPositionAndValue at position -2, 64, -55
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: Block found is not a multi-block; self: id=0 r=0 d=0 m=0 m2=0 m3=0, isChild? False
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] TRACE: now checking -2, 64, -55
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: height of focused block is 1
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: GetBaseBlockPositionAndValue at position -2, 65, -55
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: Block found is not a multi-block; self: id=5642 r=3 d=0 m=0 m2=0 m3=0, isChild? False
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] TRACE: now checking -2, 65, -55
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: height of focused block is 1
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: GetBaseBlockPositionAndValue at position -2, 66, -55
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: Block found is not a multi-block; self: id=0 r=0 d=0 m=0 m2=0 m3=0, isChild? False
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] TRACE: now checking -2, 66, -55
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: height of focused block is 1
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: GetBaseBlockPositionAndValue at position -2, 67, -55
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: Block found is not a multi-block; self: id=13850 r=1 d=0 m=0 m2=0 m3=0, isChild? False
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] TRACE: now checking -2, 67, -55
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] TRACE: found the next accessible (portable) elevator at -2, 67, -55 can be accessed
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: BOUNDS SET: (-2.0, 67.0, -55.0), (-1.0, 69.0, -54.0)
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: found 0 entities at position
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: Checking -3, 67, -55
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: block1: Wood - Cube
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: block2: Wood - Cube
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: block3: Wood - Cube
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: Cannot move to -3, 67, -55
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: Checking -1, 67, -55
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: block1: Air
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: block2: Air
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: block3: Air
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: Cannot move to -1, 67, -55
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: Checking -2, 67, -54
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: block1: Air
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: block2: Air
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: block3: Air
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: Cannot move to -2, 67, -54
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: Checking -2, 67, -56
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: block1: Air
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: block2: Air
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: block3: Air
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: Cannot move to -2, 67, -56
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: found 0 possible offsets
+2023-04-16T19:42:10 136.015 INF [QuantumElevators.CoreLogic] DEBUG: about to warp entityPlayer to (-1.5, 67.0, -54.5)
+2023-04-16T19:42:10 136.017 INF [QuantumElevators.CoreLogic] DEBUG: after teleport, entityPlayer now at (-1.5, 67.0, -54.5)
+2023-04-16T19:42:10 136.017 INF [QuantumElevators.CoreLogic] DEBUG: after remove buff, entityPlayer now at (-1.5, 67.0, -54.5)
+2023-04-16T19:42:10 136.018 INF Respawn almost done
+2023-04-16T19:42:10 136.018 INF PlayerSpawnedInWorld (reason: Teleport, position: -1, 67, -54): localplayer
+2023-04-16T19:42:10 136.023 INF Teleported to (-1.5, 67.0, -54.5)
+```
+
+## Below
+
+```log
+2023-04-16T19:41:21 87.116 INF [QuantumElevators.CoreLogic] DEBUG: -2, 67, -55 contains a PortableQuantumBlock; premission is always granted
+2023-04-16T19:41:21 87.116 INF [QuantumElevators.CoreLogic] TRACE: calling TryGetFloorBelow
+2023-04-16T19:41:21 87.117 INF [QuantumElevators.CoreLogic] DEBUG: GetBaseBlockPositionAndValue at position -2, 66, -55
+2023-04-16T19:41:21 87.117 INF [QuantumElevators.CoreLogic] DEBUG: Block found is not a multi-block; self: id=0 r=0 d=0 m=0 m2=0 m3=0, isChild? False
+2023-04-16T19:41:21 87.117 INF [QuantumElevators.CoreLogic] TRACE: now checking -2, 66, -55
+2023-04-16T19:41:21 87.117 INF [QuantumElevators.CoreLogic] DEBUG: height of focused block is 1
+2023-04-16T19:41:21 87.117 INF [QuantumElevators.CoreLogic] DEBUG: GetBaseBlockPositionAndValue at position -2, 65, -55
+2023-04-16T19:41:21 87.117 INF [QuantumElevators.CoreLogic] DEBUG: Block found is not a multi-block; self: id=5642 r=3 d=0 m=0 m2=0 m3=0, isChild? False
+2023-04-16T19:41:21 87.117 INF [QuantumElevators.CoreLogic] TRACE: now checking -2, 65, -55
+2023-04-16T19:41:21 87.117 INF [QuantumElevators.CoreLogic] DEBUG: height of focused block is 1
+2023-04-16T19:41:21 87.117 INF [QuantumElevators.CoreLogic] DEBUG: GetBaseBlockPositionAndValue at position -2, 64, -55
+2023-04-16T19:41:21 87.117 INF [QuantumElevators.CoreLogic] DEBUG: Block found is not a multi-block; self: id=0 r=0 d=0 m=0 m2=0 m3=0, isChild? False
+2023-04-16T19:41:21 87.117 INF [QuantumElevators.CoreLogic] TRACE: now checking -2, 64, -55
+2023-04-16T19:41:21 87.117 INF [QuantumElevators.CoreLogic] DEBUG: height of focused block is 1
+2023-04-16T19:41:21 87.117 INF [QuantumElevators.CoreLogic] DEBUG: GetBaseBlockPositionAndValue at position -2, 63, -55
+2023-04-16T19:41:21 87.117 INF [QuantumElevators.CoreLogic] DEBUG: Block found is a multi-block; self: id=13850 px=0 py=-1 pz=0, isChild? True, parent: 0, -1, 0
+2023-04-16T19:41:21 87.117 INF [QuantumElevators.CoreLogic] DEBUG: >> parentY: -1
+2023-04-16T19:41:21 87.117 INF [QuantumElevators.CoreLogic] TRACE: now checking -2, 62, -55
+2023-04-16T19:41:21 87.117 INF [QuantumElevators.CoreLogic] TRACE: found the next accessible (portable) elevator at -2, 62, -55 can be accessed
+2023-04-16T19:41:21 87.118 INF [QuantumElevators.CoreLogic] DEBUG: BOUNDS SET: (-2.0, 62.0, -55.0), (-1.0, 64.0, -54.0)
+2023-04-16T19:41:21 87.118 INF [QuantumElevators.CoreLogic] DEBUG: found 0 entities at position
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: Checking -3, 62, -55
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: block1: Topsoil Terrain Filler (POI)
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: block2: Wood - Cube
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: block3: Wood - Cube
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: Cannot move to -3, 62, -55
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: Checking -1, 62, -55
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: block1: Topsoil Terrain Filler (POI)
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: block2: Air
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: block3: Air
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: Can move to -1, 62, -55
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: Checking -2, 62, -54
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: block1: Topsoil Terrain Filler (POI)
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: block2: Air
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: block3: Air
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: Can move to -2, 62, -54
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: Checking -2, 62, -56
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: block1: Topsoil Terrain Filler (POI)
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: block2: Air
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: block3: Air
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: Can move to -2, 62, -56
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: found 3 possible offsets
+2023-04-16T19:41:21 87.119 INF [QuantumElevators.CoreLogic] DEBUG: about to warp entityPlayer to (-1.5, 62.0, -54.5)
+2023-04-16T19:41:21 87.122 INF [QuantumElevators.CoreLogic] DEBUG: after teleport, entityPlayer now at (-1.5, 62.0, -54.5)
+2023-04-16T19:41:21 87.122 INF [QuantumElevators.CoreLogic] DEBUG: after remove buff, entityPlayer now at (-1.5, 62.0, -54.5)
+2023-04-16T19:41:21 87.123 INF Respawn almost done
+2023-04-16T19:41:21 87.123 INF PlayerSpawnedInWorld (reason: Teleport, position: -1, 67, -54): localplayer
+2023-04-16T19:41:21 87.129 INF Teleported to (-1.5, 62.0, -54.5)
+```
+
+## [TODO]
+
+- fix unintentional offset check at wrong time
+
+## [1.1.3-testing] - UNRELEASED
+
+- fix crash caused by complex multi-dim blocks
+- update upper y check to 253 build limit
+
 ## [1.1.2] - 2023-03-05
 
 - add conf check when applying warp effects buff
