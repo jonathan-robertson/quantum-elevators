@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.3] - 2023-04-16
+
+- fix crash caused by complex multi-dim blocks
+- fix unintentional offset check at wrong time
+- update upper y check to 253 build limit
+
 ## [1.1.2] - 2023-03-05
 
 - add conf check when applying warp effects buff
