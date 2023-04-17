@@ -104,6 +104,11 @@ namespace QuantumElevators
             var crowd = GetEntitiesAt(blockPos);
             _log.Debug($"found {crowd.Count} entities at position");
 
+            if (crowd.Count == 0)
+            {
+                return false;
+            }
+
             var offsets = FindOffsets(blockPos);
             _log.Debug($"found {offsets.Count} possible offsets");
 
@@ -149,7 +154,7 @@ namespace QuantumElevators
                     crowd[i].SetPosition(newPos);
                 }
             }
-            return crowd.Count > 0;
+            return true;
         }
 
         /// <summary>
@@ -409,10 +414,10 @@ namespace QuantumElevators
             var blockValue = GameManager.Instance.World.ChunkCache.GetBlock(pos);
             var blockId = blockValue.Block.blockID;
             _log.Trace($"blockId: {blockId}");
-            var blockName = blockId == 0 
-                ? "air" 
-                : Block.nameIdMapping != null 
-                    ? Block.nameIdMapping.GetNameForId(blockValue.Block.blockID) 
+            var blockName = blockId == 0
+                ? "air"
+                : Block.nameIdMapping != null
+                    ? Block.nameIdMapping.GetNameForId(blockValue.Block.blockID)
                     : "no name mapping";
             _log.Debug($"Identified block: id=[{blockId}], name=[{blockName}].");
 
