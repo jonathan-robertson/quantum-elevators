@@ -12,7 +12,7 @@
     - [Secure Quantum Elevator panels](#secure-quantum-elevator-panels)
   - [Compatibility](#compatibility)
   - [Admin Commands](#admin-commands)
-  - [Acknowledgements](#acknowledgements)
+  - [Special Thanks](#special-thanks)
 
 ## Summary
 
@@ -69,11 +69,12 @@ Local Single Player | Yes | EAC must be **Disabled**
 
 primary | alternate | params | description
 :---: | :---: | :---: | ---
-quantumelevators | qe | N/A | enable/disable debug logging for this mod (disabled by default)
+quantumelevators | qe | `debug` | enable/disable debug logging for this mod (disabled by default)
+quantumelevators | qe | `push <x> <y> <z>` | recursively push entities 1 block at a time to make room; use float values from 'lp' command to let system calculate correct block coordinates for you
 
 *Note that leaving debug mode on can have a negative impact on performance. It is therefore recommended to only turn it on while troubleshooting and then disable it afterwards.*
 
-## Acknowledgements
+## Special Thanks
 
 Several people in the community have offered feedback, identified bugs, and have worked to provide me with debug logs to help move this project forward. Quantum Elevators is a cool idea and has been a lot of fun to work on, but would not be what it is today without the added effort from these incredible admins, modders, and players. *(Discord Usernames)*
 
