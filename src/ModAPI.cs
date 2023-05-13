@@ -22,7 +22,21 @@ namespace QuantumElevators
             harmony.PatchAll(Assembly.GetExecutingAssembly());
             _log.Info("loaded");
 
+            ModEvents.GameAwake.RegisterHandler(OnGameAwake);
             ModEvents.GameStartDone.RegisterHandler(OnGameStartDone);
+        }
+
+        private const string DLL_VERSION = "1.1.4"; // TODO: always update this before each release
+        private void OnGameAwake()
+        {
+            try
+            {
+                _log.Info($"Quantum Elevators DLL Version: {DLL_VERSION}");
+            }
+            catch (Exception e)
+            {
+                _log.Error("OnGameAwake", e);
+            }
         }
 
         private void OnGameStartDone()
