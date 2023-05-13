@@ -7,8 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.4] - 2023-05-13
 
+- add dll version log message on awake
 - fix travel through rotated multidim blocks
 - update console enable/disable debug command
+- update readme with setup steps
 
 ## [1.1.3] - 2023-04-16
 
