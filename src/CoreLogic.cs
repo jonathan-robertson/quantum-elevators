@@ -312,31 +312,28 @@ namespace QuantumElevators
         private static bool TryGetFloorAbove(PlatformUserIdentifierAbs internalId, Vector3i sourcePos, BlockValue sourceBlockValue, TileEntitySign source, out Vector3i targetPos)
         {
             _log.Trace("calling TryGetFloorAbove");
-            var clrId = GameManager.Instance.World.ChunkCache.ClusterIdx;
-
             var crawlerPos = sourcePos;
             BlockValue targetBlockValue;
+            var clrId = GameManager.Instance.World.ChunkCache.ClusterIdx;
             _log.Debug($"planning to look above, starting from {crawlerPos}");
             for (crawlerPos.y += GetBlockHeight(sourceBlockValue); crawlerPos.y < 253; crawlerPos.y += GetBlockHeight(targetBlockValue))
             {
+                if (GameManager.Instance.World.IsOpenSkyAbove(clrId, crawlerPos.x, crawlerPos.y, crawlerPos.z))
+                {
+                    _log.Debug($"open sky above {crawlerPos}; abandoning above check");
+                    targetPos = default;
+                    return false;
+                }
+
                 targetBlockValue = GetBaseBlockPositionAndValue(crawlerPos, out targetPos);
-                if (targetBlockValue.Block.blockID == ModApi.PortableQuantumBlockId)
+                if (ModApi.PortableQuantumBlockId == targetBlockValue.Block.blockID)
                 {
                     _log.Debug($"found the next accessible (portable) elevator at {targetPos} can be accessed");
                     return true;
                 }
 
-                if (targetBlockValue.Block.blockID != ModApi.SecureQuantumBlockId)
-                {
-                    if (GameManager.Instance.World.IsOpenSkyAbove(clrId, targetPos.x, targetPos.y, targetPos.z))
-                    {
-                        _log.Debug($"open sky above {targetPos}; abandoning above check");
-                        return false;
-                    }
-                    continue;
-                }
-
-                if (CanAccess(internalId, source, GetTileEntitySignAt(targetPos)))
+                if (ModApi.SecureQuantumBlockId == targetBlockValue.Block.blockID
+                    && CanAccess(internalId, source, GetTileEntitySignAt(targetPos)))
                 {
                     _log.Debug($"found the next accessible (secured) elevator at {targetPos} can be accessed");
                     return true;
@@ -387,17 +384,54 @@ namespace QuantumElevators
         /// <summary>
         /// Calculate and return the given BlockValue's height.
         /// </summary>
-        /// <param name="blockValue">The BlockValue to determine height for.</param>
+        /// <param name="blockValue">The BlockValue to determine height for; if multidim, this value is expected to be the parent.</param>
         /// <returns>The height of the BlockValue provided.</returns>
         private static int GetBlockHeight(BlockValue blockValue)
         {
+            var height = 1;
             if (blockValue.Block.isMultiBlock)
             {
-                _log.Debug($"height of focused block is {blockValue.Block.multiBlockPos.dim.y}");
-                return blockValue.Block.multiBlockPos.dim.y;
+                switch (blockValue.rotation) // note: if multidim, we can only pull rotation properly via the parent blockValue
+                {
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                        height = blockValue.Block.multiBlockPos.dim.y;
+                        break;
+                    case 8:
+                    case 10:
+                    case 13:
+                    case 15:
+                    case 16:
+                    case 18:
+                    case 21:
+                    case 23:
+                        height = blockValue.Block.multiBlockPos.dim.z;
+                        break;
+                    case 9:
+                    case 11:
+                    case 12:
+                    case 14:
+                    case 17:
+                    case 19:
+                    case 20:
+                    case 22:
+                        height = blockValue.Block.multiBlockPos.dim.x;
+                        break;
+                }
+
+                _log.Debug($"calculatedHeight=[{height}] for multidim blockValue=[{blockValue}], multiBlockPos.dim=[{blockValue.Block.multiBlockPos.dim}]");
             }
-            _log.Debug($"height of focused block is 1");
-            return 1;
+            else
+            {
+                _log.Debug($"calculatedHeight=[{height}] for non-multidim blockValue=[{blockValue}]");
+            }
+            return height;
         }
 
         /// <summary>
@@ -405,32 +439,29 @@ namespace QuantumElevators
         /// </summary>
         /// <param name="pos">The given Block Position to retrieve a block value from.</param>
         /// <param name="blockPosition">Parent block position of the retrieved BlockValue found at the given position.</param>
-        /// <returns>The block value found at the given position.</returns>
+        /// <returns>The block value found at the given position or its parent position.</returns>
         private static BlockValue GetBaseBlockPositionAndValue(Vector3i pos, out Vector3i blockPosition)
         {
             _log.Trace($"GetBaseBlockPositionAndValue at position {pos}");
-            blockPosition = pos;
 
             var blockValue = GameManager.Instance.World.ChunkCache.GetBlock(pos);
-            var blockId = blockValue.Block.blockID;
-            _log.Trace($"blockId: {blockId}");
-            var blockName = blockId == 0
+
+            var blockName = blockValue.Block.blockID == 0
                 ? "air"
                 : Block.nameIdMapping != null
                     ? Block.nameIdMapping.GetNameForId(blockValue.Block.blockID)
                     : "no name mapping";
-            _log.Debug($"Identified block: id=[{blockId}], name=[{blockName}].");
 
-            var isChild = blockValue.ischild;
-            _log.Debug($"block: {blockValue}, isChild? {isChild}{(isChild ? ", parent:" + blockValue.parent : "")}");
-            if (isChild)
+            if (blockValue.ischild)
             {
-                var parentY = blockValue.parenty;
-                _log.Debug($">> parentY: {parentY}");
-                blockPosition.y += parentY;
-                _log.Debug($"parent/tile position determined to be at {blockPosition}");
-                // NOTE: block value will be the same; leaving note here in case we ever find a way to make compound blocks
-                // blockValueBody = GameManager.Instance.World.GetBlock(blockPosition);
+                blockPosition = pos + blockValue.parent;
+                blockValue = GameManager.Instance.World.GetBlock(blockPosition);
+                _log.Debug($"Identified block: id=[{blockValue.Block.blockID}], name=[{blockName}], blockValue=[{blockValue}], originalPos=[{pos}], parentPos=[{blockPosition}].");
+            }
+            else
+            {
+                blockPosition = pos;
+                _log.Debug($"Identified block: id=[{blockValue.Block.blockID}], name=[{blockName}], blockValue=[{blockValue}], position=[{pos}].");
             }
             return blockValue;
         }
@@ -546,6 +577,20 @@ namespace QuantumElevators
                     || (_bAllowToSpawnOnWaterPos && Block.list[block.blockID].blockMaterial.IsLiquid))
                 && !block2.IsCollideMovement && !block2.shape.IsSolidSpace
                 && !block3.IsCollideMovement && !block3.shape.IsSolidSpace;
+        }
+
+        private static bool TryGetParentBlock(Vector3i blockPos, BlockValue blockValue, out Vector3i parentPos, out BlockValue parentBlockValue)
+        {
+            if (!blockValue.Block.isMultiBlock || !blockValue.ischild)
+            {
+                parentPos = default;
+                parentBlockValue = default;
+                return false;
+            }
+
+            parentPos = blockPos + blockValue.parent;
+            parentBlockValue = GameManager.Instance.World.ChunkCache.GetBlock(parentPos);
+            return true;
         }
     }
 }
