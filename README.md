@@ -12,7 +12,8 @@
     - [Secure Quantum Elevator panels](#secure-quantum-elevator-panels)
     - [Admin Commands](#admin-commands)
   - [Setup](#setup)
-    - [Compatibility Quick Reference](#compatibility-quick-reference)
+    - [Environment / EAC / Hosting Requirements](#environment--eac--hosting-requirements)
+    - [Map Considerations for Installation or UnInstallation](#map-considerations-for-installation-or-uninstallation)
     - [Windows PC (Single Player or Hosting P2P)](#windows-pc-single-player-or-hosting-p2p)
       - [Critical Reminders](#critical-reminders)
     - [Windows/Linux Installation (Server via FTP from Windows PC)](#windowslinux-installation-server-via-ftp-from-windows-pc)
@@ -78,11 +79,7 @@ Without proper installation, this mod will not work as expected. Using this guid
 
 If you have trouble getting things working, you can reach out to me for support via [Support](#support).
 
-### Compatibility Quick Reference
-
-Does this mod require a fresh map?
-
-> No, a fresh map is not necessary. You can add or remove the Quantum Elevators mod without having to start a new map.
+### Environment / EAC / Hosting Requirements
 
 Environment | Compatible | Does EAC Need to be Disabled? | Who needs to install?
 --- | --- | --- | ---
@@ -91,6 +88,16 @@ Peer-to-Peer Hosting | Yes | only on the host | only the host
 Single Player Game | Yes | Yes | self (of course)
 
 > 🤔 If you aren't sure what some of this means, details steps are provided below to walk you through the setup process.
+
+### Map Considerations for Installation or UnInstallation
+
+- Does **adding** this mod require a fresh map?
+  - No! You can drop this mod into an ongoing map without any trouble.
+  - Because Quantum Elevators will show up in every trader's inventory, you may want to interact with each trader after installing this mod (and restarting the server/game) and opt to reset each trader's inventory. You can request this with Debug Mode enabled (run admin command `dm`, then close the admin console and hit `Q`; this enables the admin trader option to force an early restock).
+- Does **removing** this mod require a fresh map?
+  - Yes for the 2 key reasons:
+    1. Some players will use elevators to travel into base locations that would otherwise be completely sealed off from the rest of the world. Suddenly removing/disabling the ability to do this would result in incredible frustration as some players would then need to break out of their bases and may not even have the tools necessary to do so. If this was the only reason for concern, removing Quantum Elevators mid-map would already be highly discouraged.
+    2. Additionally, technical issues arise if players step on a panel's previous location after removing this mod (causing endless red errors in the client-side console, resulting in the player being locked in place). This is because Quantum Elevators uses the BuffWhenWalkedOn property in the 2 special blocks it adds, which is a common feature of many block-based 7 Days to Die mods. Removing any block of this type from the game after it has been placed will cause the same issue and
 
 ### Windows PC (Single Player or Hosting P2P)
 
@@ -108,7 +115,8 @@ Single Player Game | Yes | Yes | self (of course)
 - ⚠️ it is **NECESSARY** for the host to run with EAC disabled or the DLL file in this mod will not be able to run
 - 😉 other players **DO NOT** need to disable EAC in order to connect to your game session, so you don't need to walk them through these steps
 - 🔑 it is also **HIGHLY RECOMMENDED** to add a password to your game session
-  - while disabling EAC is 100% necessary to run this mod properly, it also allows other players to run any mods they want on their end (which could be used to gain access to admin commands and/or grief you or your other players)
+  - while disabling EAC is 100% necessary (for P2P or single player) to run this mod properly, it also allows other players to run any mods they want on their end (which could be used to gain access to admin commands and/or grief you or your other players)
+  - please note that *dedicated servers* do not have this limitation and can have EAC fully enabled; we have setup guides for dedicated servers as well, listed in the next 2 sections: [Windows/Linux Installation (Server via FTP from Windows PC)](#windowslinux-installation-server-via-ftp-from-windows-pc) and [Linux Server Installation (Server via SSH)](#linux-server-installation-server-via-ssh)
 
 ### Windows/Linux Installation (Server via FTP from Windows PC)
 
@@ -125,7 +133,7 @@ Single Player Game | Yes | Yes | self (of course)
 
 1. 🔍 [SSH](https://www.digitalocean.com/community/tutorials/how-to-use-ssh-to-connect-to-a-remote-server) into your server and navigate to the `Mods` folder on your server
     - if you installed 7 Days to Die with [LinuxGSM](https://linuxgsm.com/servers/sdtdserver/) (which I'd highly recommend), the default mods folder will be under `~/serverfiles/Mods` (which you may have to create)
-2. 📦 Download the latest `quantum-elevators.zip` release from [this link](https://github.com/jonathan-robertson/quantum-elevators/releases/latest/) in whatever method you prefer
+2. 📦 Download the latest `quantum-elevators.zip` release from [this link](https://github.com/jonathan-robertson/quantum-elevators/releases/latest/) with whatever tool you prefer
     - example: `wget https://github.com/jonathan-robertson/quantum-elevators/releases/latest/download/quantum-elevators.zip`
 3. 📂 Unzip this file to a folder by the same name: `unzip quantum-elevators.zip -d quantum-elevators`
     - you may need to install `unzip` if it isn't already installed: `sudo apt-get update && sudo apt-get install unzip`
