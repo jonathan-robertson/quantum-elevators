@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 
-namespace QuantumElevators
+namespace QuantumElevators.Patches
 {
     internal enum PlayerState
     {
