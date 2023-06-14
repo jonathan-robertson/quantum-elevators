@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.0.0] - 2023-06-13
 
 - clarify/correct note about removing this mod
+- no longer stop jumping; needed for onGround check
 - update console command for a21
 - update to a21 modinfo file format
 - update to a21 references

@@ -28,14 +28,6 @@
                 <triggered_effect trigger="onSelfLeaveGame" action="StopSound" sound="solarpanel_idle" play_in_head="true" />
             </effect_group>
 
-            <effect_group name="repurpose_jumping">
-                <requirements>
-                    <requirement name="EntityTagCompare" tags="player" />
-                </requirements>
-                <passive_effect name="JumpStrength" operation="perc_subtract" value="0.99" />
-                <passive_effect name="StaminaLoss" operation="perc_add" value="-1.00" tags="jumping" />
-            </effect_group>
-
             <effect_group name="timer">
                 <triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$quantumElevatorTimer" operation="set" value="2" />
                 <triggered_effect trigger="onSelfBuffStack" action="ModifyCVar" cvar="$quantumElevatorTimer" operation="set" value="2" />
