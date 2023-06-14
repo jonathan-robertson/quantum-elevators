@@ -27,18 +27,18 @@ namespace QuantumElevators.Patches
         /// <param name="__instance">EntityAlive instance to check from.</param>
         /// <param name="___blockPosStandingOn">Block Position this entity is standing on.</param>
         /// <param name="___blockValueStandingOn">BlockValue this entity is standing on.</param>
-        /// <param name="___bCrouching">Whether the client behind this entity has the Crouch key held down (or CrouchLock is enabled).</param>
-        /// <param name="___bJumping">Whether the client behind this entity has the Jump key held down.</param>
-        public static void Postfix(EntityAlive __instance, Vector3i ___blockPosStandingOn, BlockValue ___blockValueStandingOn, bool ___bCrouching, bool ___bJumping)
+        public static void Postfix(EntityAlive __instance, Vector3i ___blockPosStandingOn, BlockValue ___blockValueStandingOn)
         {
             try
             {
-                if (ModApi.IsServer && IsQuantumBlock(___blockValueStandingOn.Block.blockID) && __instance is EntityPlayer player)
+                if (ModApi.IsServer
+                    && IsQuantumBlock(___blockValueStandingOn.Block.blockID)
+                    && __instance is EntityPlayer player)
                 {
                     // update elevation for buff shown while player standing on block (informative, only)
                     player.SetCVar(CoreLogic.CVarTargetElevationName, Utils.Fastfloor(player.position.y));
 
-                    var currentPlayerState = GetCurrentPlayerState(___bCrouching, ___bJumping);
+                    var currentPlayerState = GetCurrentPlayerState(player.Crouching, !player.onGround);
                     if (!_prevStates.TryGetValue(player.entityId, out var prevPlayerState))
                     {
                         _prevStates[player.entityId] = currentPlayerState;
