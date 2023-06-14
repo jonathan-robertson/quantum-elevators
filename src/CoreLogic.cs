@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -165,10 +166,10 @@ namespace QuantumElevators
         /// <param name="destinationCenter">Vector3 representing the destination to warp to.</param>
         private static void WarpPlayer(ClientInfo clientInfo, EntityPlayer player, Vector3 destinationCenter)
         {
-            clientInfo.SendPackage(NetPackageManager.GetPackage<NetPackageTeleportPlayer>().Setup(destinationCenter, player.rotation, true));
-            _log.Debug($"after teleport, entityPlayer now at {player.position}");
+            clientInfo.SendPackage(NetPackageManager.GetPackage<NetPackageTeleportPlayer>().Setup(destinationCenter, new Vector3(0, player.rotation.y % 360, 0), true));
+            _log.Debug($"after teleport, entityPlayer now at {player.position} {player.rotation}");
             player.Buffs.RemoveBuff(BuffCooldownName);
-            _log.Debug($"after remove buff, entityPlayer now at {player.position}");
+            _log.Debug($"after remove buff, entityPlayer now at {player.position} {player.rotation}");
         }
 
         /// <summary>
