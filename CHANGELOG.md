@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - clean large rotation values
 - no longer stop jumping; needed for onGround check
 - update console command for a21
+- update panel height to 3 blocks for jump room
 - update to a21 modinfo file format
 - update to a21 references
 - update to reference onGround vs bJumping (retired)

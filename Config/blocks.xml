@@ -3,7 +3,7 @@
         <block name="quantumElevatorBlockSecure">
             <property name="Extends" value="securityGatePlate" />
             <property name="DescriptionKey" value="quantumElevatorBlockSecureDesc" />
-            <property name="MultiBlockDim" value="1,2,1" />
+            <property name="MultiBlockDim" value="1,3,1" />
             <property name="DisplayType" value="blockMulti" />
 
             <property name="CustomIcon" value="securityGatePlate" />
@@ -49,7 +49,7 @@
         <block name="quantumElevatorBlockPortable">
             <property name="Extends" value="securityGatePlate" />
             <property name="DescriptionKey" value="quantumElevatorBlockPortableDesc" />
-            <property name="MultiBlockDim" value="1,2,1" />
+            <property name="MultiBlockDim" value="1,3,1" />
             <property name="DisplayType" value="blockMulti" />
 
             <property name="CustomIcon" value="securityGatePlate" />
