@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0] - ?
 
+- add electricTier2 trader stage requirement
 - add key bindings to instructions
 - clarify/correct note about removing this mod
 - clean large rotation values
