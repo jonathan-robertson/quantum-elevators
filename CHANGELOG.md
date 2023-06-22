@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0] - ?
 
+- add key bindings to instructions
 - clarify/correct note about removing this mod
 - clean large rotation values
 - no longer stop jumping; needed for onGround check
