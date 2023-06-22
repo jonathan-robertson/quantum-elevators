@@ -1,0 +1,10 @@
+<config>
+    <insertAfter xpath="/progression/crafting_skills/crafting_skill[@name='craftingElectrician']/display_entry[@name_key='electricianT2']">
+        <display_entry icon="securityGatePlate" name_key="electrician_quantumElevators" has_quality="false" unlock_level="60">
+            <unlock_entry item="quantumElevatorBlockSecure,quantumElevatorBlockPortable" unlock_tier="1" />
+        </display_entry>
+    </insertAfter>
+    <append xpath="/progression/crafting_skills/crafting_skill[@name='craftingElectrician']/effect_group">
+        <passive_effect name="RecipeTagUnlocked" operation="base_set" level="60,100" value="1" tags="quantumElevatorBlockSecure,quantumElevatorBlockPortable" />
+    </append>
+</config>

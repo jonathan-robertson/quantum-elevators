@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - add electricTier2 trader stage requirement
 - add key bindings to instructions
+- add recipe unlock to electronics magazine
 - clarify/correct note about removing this mod
 - clean large rotation values
 - no longer stop jumping; needed for onGround check
