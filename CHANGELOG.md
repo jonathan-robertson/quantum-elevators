@@ -7,13 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## TODO
 
-- test locks for security, etc.
-- test trader presence and trader stage
-- test recipe mechanics... consider if they should unlock in a specific magazine
+- limit jump height to 1 block when on panel (help with parkour's massive jump height)
 
-## [2.0.0] - ?
+## [2.0.0] - UNRELEASED
 
 - add electricTier2 trader stage requirement
+- add journal entry on login
 - add key bindings to instructions
 - add recipe unlock to electronics magazine
 - clarify/correct note about removing this mod
