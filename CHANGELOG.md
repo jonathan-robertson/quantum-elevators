@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2023-06-25
+
+- add electricTier2 trader stage requirement
+- add journal entry on login
+- add key bindings to instructions
+- add recipe unlock to electronics magazine
+- clarify/correct note about removing this mod
+- clean large rotation values
+- limit jump height to 1 block when on panel
+- no longer stop jumping; needed for onGround check
+- update console command for a21
+- update panel height to 3 blocks for jump room
+- update to a21 modinfo file format
+- update to a21 references
+- update to reference onGround vs bJumping (retired)
+
 ## [1.1.4] - 2023-05-13
 
 - add dll version log message on awake

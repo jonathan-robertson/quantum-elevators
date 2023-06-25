@@ -1,12 +1,12 @@
 <config>
     <append xpath="/recipes">
-        <recipe name="quantumElevatorBlockSecure" count="1" craft_area="workbench" tags="workbenchCrafting">
+        <recipe name="quantumElevatorBlockSecure" count="1" craft_area="workbench" tags="learnable,workbenchCrafting">
             <ingredient name="resourceForgedSteel" count="8" />
             <ingredient name="resourceScrapPolymers" count="15" />
             <ingredient name="resourceElectricParts" count="30" />
             <ingredient name="carBattery" count="1" />
         </recipe>
-        <recipe name="quantumElevatorBlockPortable" count="1" craft_area="workbench" tags="workbenchCrafting">
+        <recipe name="quantumElevatorBlockPortable" count="1" craft_area="workbench" tags="learnable,workbenchCrafting">
             <ingredient name="resourceForgedSteel" count="8" />
             <ingredient name="resourceScrapPolymers" count="10" />
             <ingredient name="resourceElectricParts" count="20" />

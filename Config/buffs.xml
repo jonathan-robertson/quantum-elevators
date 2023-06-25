@@ -28,12 +28,12 @@
                 <triggered_effect trigger="onSelfLeaveGame" action="StopSound" sound="solarpanel_idle" play_in_head="true" />
             </effect_group>
 
-            <effect_group name="repurpose_jumping">
+            <effect_group name="reduce jump strength">
                 <requirements>
                     <requirement name="EntityTagCompare" tags="player" />
                 </requirements>
-                <passive_effect name="JumpStrength" operation="perc_subtract" value="0.99" />
-                <passive_effect name="StaminaLoss" operation="perc_add" value="-1.00" tags="jumping" />
+                <passive_effect name="JumpStrength" operation="base_set" value="0.125" />
+                <passive_effect name="PerkLevel" operation="base_set" value="0" tags="perkParkour" />
             </effect_group>
 
             <effect_group name="timer">
