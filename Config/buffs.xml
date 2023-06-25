@@ -28,6 +28,14 @@
                 <triggered_effect trigger="onSelfLeaveGame" action="StopSound" sound="solarpanel_idle" play_in_head="true" />
             </effect_group>
 
+            <effect_group name="reduce jump strength">
+                <requirements>
+                    <requirement name="EntityTagCompare" tags="player" />
+                </requirements>
+                <passive_effect name="JumpStrength" operation="base_set" value="0.125" />
+                <passive_effect name="PerkLevel" operation="base_set" value="0" tags="perkParkour" />
+            </effect_group>
+
             <effect_group name="timer">
                 <triggered_effect trigger="onSelfBuffStart" action="ModifyCVar" cvar="$quantumElevatorTimer" operation="set" value="2" />
                 <triggered_effect trigger="onSelfBuffStack" action="ModifyCVar" cvar="$quantumElevatorTimer" operation="set" value="2" />

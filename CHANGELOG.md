@@ -5,10 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## TODO
-
-- limit jump height to 1 block when on panel (help with parkour's massive jump height)
-
 ## [2.0.0] - UNRELEASED
 
 - add electricTier2 trader stage requirement
@@ -17,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - add recipe unlock to electronics magazine
 - clarify/correct note about removing this mod
 - clean large rotation values
+- limit jump height to 1 block when on panel
 - no longer stop jumping; needed for onGround check
 - update console command for a21
 - update panel height to 3 blocks for jump room
