@@ -8,8 +8,8 @@ namespace QuantumElevators
     {
         private static readonly ModLog<ModApi> _log = new ModLog<ModApi>();
 
-        private static readonly string ModMaintainer = "Kanaverum#8183";
-        private static readonly string SupportLink = "https://discord.gg/tRJHSB9Uk7";
+        private static readonly string ModMaintainer = "@kanaverum";
+        private static readonly string SupportLink = "https://discord.gg/hYa2sNHXya";
 
         public static bool DebugMode { get; set; } = false;
         public static bool IsServer { get; private set; } = false;
