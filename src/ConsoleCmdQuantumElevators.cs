@@ -22,12 +22,12 @@ namespace QuantumElevators
             _help = $"Usage:\n  {string.Join("\n  ", dict.Keys.Select(command => $"{i++}. {GetCommands()[0]} {command}").ToList())}\nDescription Overview\n{string.Join("\n", dict.Values.Select(description => $"{j++}. {description}").ToList())}";
         }
 
-        protected override string[] getCommands()
+        public override string[] getCommands()
         {
             return _commands;
         }
 
-        protected override string getDescription()
+        public override string getDescription()
         {
             return "Admin commands for working with Quantum Elevators";
         }

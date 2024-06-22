@@ -45,7 +45,7 @@ namespace QuantumElevators
             //  crouch/jump fires tons of them; we just want the first one.
             _ = player.Buffs.AddBuff(BuffCooldownName);
 
-            var userIdentifier = GameManager.Instance.persistentPlayers.GetPlayerDataFromEntityID(player.entityId).UserIdentifier;
+            var userIdentifier = GameManager.Instance.persistentPlayers.GetPlayerDataFromEntityID(player.entityId).PrimaryId;
             if (CanAccess(player, userIdentifier, sourceBlockPos, sourceBlockValue, out var sourceTileEntity)
                 && (direction == Direction.Up
                     ? !player.Buffs.HasBuff(BuffAtTopFloorName) && TryGetFloorAbove(userIdentifier, sourceBlockPos, sourceBlockValue, sourceTileEntity, out var destination)
