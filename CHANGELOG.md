@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix particles to no longer surround weapon
 - override default 'container locked' text
 - remove journal tips (discontinued in 1.0)
-- remove sign action from secure panel (finally!!)
+- remove sign action from secure panel
 - update references for 7dtd-1.0
 
 ## [2.0.2] - 2023-08-01
