@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.0.0] - ?
 
+- override default 'container locked' text
 - remove journal tips (discontinued in 1.0)
 - remove sign action from secure panel (finally!!)
 - update references for 7dtd-1.0
