@@ -1,6 +1,6 @@
 # Quantum Elevators
 
-[![🧪 Tested On](https://img.shields.io/badge/🧪%20Tested%20On-A21%20b324-blue.svg)](https://7daystodie.com/) [![📦 Automated Release](https://github.com/jonathan-robertson/quantum-elevators/actions/workflows/release.yml/badge.svg)](https://github.com/jonathan-robertson/quantum-elevators/actions/workflows/release.yml)
+[![🧪 Tested On](https://img.shields.io/badge/🧪%20Tested%20On-1.0%20b309-blue.svg)](https://7daystodie.com/) [![📦 Automated Release](https://github.com/jonathan-robertson/quantum-elevators/actions/workflows/release.yml/badge.svg)](https://github.com/jonathan-robertson/quantum-elevators/actions/workflows/release.yml)
 
 ![quantum-elevators social image](https://raw.githubusercontent.com/jonathan-robertson/quantum-elevators/media/quantum-elevators-logo-social.jpg)
 
@@ -51,7 +51,7 @@ Instead, Portable Quantum Elevator panels are often the ideal choice when planni
 
 ### Secure Quantum Elevator panels
 
-🔐 These Panels **cannot be picked up once placed**, but they can be **locked**/**unlocked** and **set to a password**. You can also **leave a secure note for yourself that only you and other authenticated players can view** (good for reminding your team which password you applied to this panel).
+🔐 These Panels **cannot be picked up once placed**, but they can be **locked**/**unlocked** and **set to a password**.
 
 The password for each of the Secured Panels you want to travel to must either share the same owner and password as the panel you are traveling from, or you must be separately authenticated with that destination panel you're attempting to visit.
 

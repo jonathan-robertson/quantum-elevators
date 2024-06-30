@@ -22,8 +22,10 @@
             <!-- don't let vehicle damage this -->
             <property name="VehicleHitScale" value=".1" />
 
-            <!-- Sign -->
-            <property name="Class" value="PlayerSign" />
+            <property name="Class" value="CompositeTileEntity" />
+            <property class="CompositeFeatures">
+                <property class="TEFeatureLockable" />
+            </property>
             <property name="Place" value="TowardsPlacerInverted" />
 
             <property class="RepairItems">

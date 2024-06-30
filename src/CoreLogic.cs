@@ -45,7 +45,7 @@ namespace QuantumElevators
             //  crouch/jump fires tons of them; we just want the first one.
             _ = player.Buffs.AddBuff(BuffCooldownName);
 
-            var userIdentifier = GameManager.Instance.persistentPlayers.GetPlayerDataFromEntityID(player.entityId).UserIdentifier;
+            var userIdentifier = GameManager.Instance.persistentPlayers.GetPlayerDataFromEntityID(player.entityId).PrimaryId;
             if (CanAccess(player, userIdentifier, sourceBlockPos, sourceBlockValue, out var sourceTileEntity)
                 && (direction == Direction.Up
                     ? !player.Buffs.HasBuff(BuffAtTopFloorName) && TryGetFloorAbove(userIdentifier, sourceBlockPos, sourceBlockValue, sourceTileEntity, out var destination)
@@ -189,28 +189,28 @@ namespace QuantumElevators
         /// </summary>
         /// <param name="player">Player to confirm access for.</param>
         /// <param name="internalId">Player ABS to confirm access with.</param>
-        /// <param name="blockPos">Block position of TileEntitySign to confirm access to.</param>
-        /// <param name="secureTileEntity">TileEntitySign identified during the confirmation process.</param>
+        /// <param name="blockPos">Block position of TileEntityComposite to confirm access to.</param>
+        /// <param name="tileEntityComposite">TileEntityComposite identified during the confirmation process.</param>
         /// <returns>Whether access is allowed for this entityPlayer.</returns>
         /// <remarks>This method assumes the provided entityBlockPos value is referring to the parent sourceBlockPos in the event of a multi-dim block.</remarks>
-        private static bool CanAccess(EntityPlayer player, PlatformUserIdentifierAbs internalId, Vector3i blockPos, BlockValue blockValue, out TileEntitySign secureTileEntity)
+        private static bool CanAccess(EntityPlayer player, PlatformUserIdentifierAbs internalId, Vector3i blockPos, BlockValue blockValue, out TEFeatureLockable lockableTileEntity)
         {
             if (blockValue.Block.blockID == ModApi.PortableQuantumBlockId)
             {
                 _log.Debug($"{player.GetBlockPosition()} contains a PortableQuantumBlock; permission is always granted");
-                secureTileEntity = null;
+                lockableTileEntity = null;
                 return true;
             }
 
             if (blockValue.Block.blockID != ModApi.SecureQuantumBlockId)
             {
                 _log.Debug($"{player.GetBlockPosition()} does not contain a PortableQuantumBlock or SecureQuantumBlock");
-                secureTileEntity = null;
+                lockableTileEntity = null;
                 return false;
             }
 
-            secureTileEntity = GetTileEntitySignAt(blockPos);
-            if (!CanAccess(internalId, secureTileEntity, out var elevatorHasPassword))
+            lockableTileEntity = GetLockableTileEntityAt(blockPos);
+            if (!CanAccess(internalId, lockableTileEntity, out var elevatorHasPassword))
             {
                 HandleLockedOut(player, elevatorHasPassword);
                 return false;
@@ -221,31 +221,31 @@ namespace QuantumElevators
         }
 
         /// <summary>
-        /// Confirm if entityPlayer has permission to the given secure TileEntity.
+        /// Confirm if entityPlayer has permission to the given secure TEFeatureLockable.
         /// </summary>
         /// <param name="internalId">Platform identifier representing the entityPlayer trying to confirm access.</param>
-        /// <param name="secureTileEntity">Secure TileEntity user is trying to confirm access to.</param>
-        /// <param name="hasPassword">Whether the secure TileEntity has a password set.</param>
-        /// <returns>Whether entityPlayer has permission to the given secure TileEntity.</returns>
-        private static bool CanAccess(PlatformUserIdentifierAbs internalId, TileEntitySign secureTileEntity, out bool hasPassword)
+        /// <param name="tileEntityComposite">Secure TEFeatureLockable user is trying to confirm access to.</param>
+        /// <param name="hasPassword">Whether the secure TEFeatureLockable has a password set.</param>
+        /// <returns>Whether entityPlayer has permission to the given secure TEFeatureLockable.</returns>
+        private static bool CanAccess(PlatformUserIdentifierAbs internalId, TEFeatureLockable lockableTileEntity, out bool hasPassword)
         {
-            if (secureTileEntity == null)
+            if (lockableTileEntity == null)
             {
                 hasPassword = false;
                 return true;
             }
-            hasPassword = secureTileEntity.HasPassword();
-            return !secureTileEntity.IsLocked() || secureTileEntity.IsUserAllowed(internalId);
+            hasPassword = lockableTileEntity.HasPassword();
+            return !lockableTileEntity.IsLocked() || lockableTileEntity.IsUserAllowed(internalId);
         }
 
         /// <summary>
         /// Confirm if entityPlayer has permission to the given targetBlockPos.
         /// </summary>
         /// <param name="internalId">Platform identifier representing the entityPlayer trying to confirm access.</param>
-        /// <param name="source">Source Secure TileEntity moveable as an opportunistic key for targetBlockPos.</param>
-        /// <param name="target">Target Secure TileEntity user is trying to confirm access to.</param>
+        /// <param name="source">Source Secure TEFeatureLockable moveable as an opportunistic key for targetBlockPos.</param>
+        /// <param name="target">Target Secure TEFeatureLockable user is trying to confirm access to.</param>
         /// <returns>Whether entityPlayer has permission to the given targetBlockPos.</returns>
-        private static bool CanAccess(PlatformUserIdentifierAbs internalId, TileEntitySign source, TileEntitySign target)
+        private static bool CanAccess(PlatformUserIdentifierAbs internalId, TEFeatureLockable source, TEFeatureLockable target)
         {
             if (CanAccess(internalId, target, out var targetHasPassword))
             {
@@ -309,7 +309,7 @@ namespace QuantumElevators
         /// <param name="source">The Tile Entity to reference when leveraging passthrough access.</param>
         /// <param name="targetPos">The next position of the elevator block the entityPlayer represented by the provided internal id can warp to.</param>
         /// <returns>Whether a quantum elevator block above the sourcePos can be warped to.</returns>
-        private static bool TryGetFloorAbove(PlatformUserIdentifierAbs internalId, Vector3i sourcePos, BlockValue sourceBlockValue, TileEntitySign source, out Vector3i targetPos)
+        private static bool TryGetFloorAbove(PlatformUserIdentifierAbs internalId, Vector3i sourcePos, BlockValue sourceBlockValue, TEFeatureLockable source, out Vector3i targetPos)
         {
             _log.Trace("calling TryGetFloorAbove");
             var crawlerPos = sourcePos;
@@ -333,7 +333,7 @@ namespace QuantumElevators
                 }
 
                 if (ModApi.SecureQuantumBlockId == targetBlockValue.Block.blockID
-                    && CanAccess(internalId, source, GetTileEntitySignAt(targetPos)))
+                    && CanAccess(internalId, source, GetLockableTileEntityAt(targetPos)))
                 {
                     _log.Debug($"found the next accessible (secured) elevator at {targetPos} can be accessed");
                     return true;
@@ -353,7 +353,7 @@ namespace QuantumElevators
         /// <param name="source">The Tile Entity to reference when leveraging passthrough access.</param>
         /// <param name="targetPos">The next position of the elevator block the entityPlayer represented by the provided internal id can warp to.</param>
         /// <returns>Whether a quantum elevator block above the sourcePos can be warped to.</returns>
-        private static bool TryGetFloorBelow(PlatformUserIdentifierAbs internalId, Vector3i sourcePos, TileEntitySign source, out Vector3i targetPos)
+        private static bool TryGetFloorBelow(PlatformUserIdentifierAbs internalId, Vector3i sourcePos, TEFeatureLockable source, out Vector3i targetPos)
         {
             _log.Trace("calling TryGetFloorBelow");
             var crawlerPos = sourcePos;
@@ -369,7 +369,7 @@ namespace QuantumElevators
                 }
 
                 if (ModApi.SecureQuantumBlockId == targetBlockValue.Block.blockID
-                    && CanAccess(internalId, source, GetTileEntitySignAt(targetPos)))
+                    && CanAccess(internalId, source, GetLockableTileEntityAt(targetPos)))
                 {
                     _log.Debug($"found the next accessible (secured) elevator at {targetPos} can be accessed");
                     return true;
@@ -467,13 +467,15 @@ namespace QuantumElevators
         }
 
         /// <summary>
-        /// Retrieve and return the TileEntitySign from the given position.
+        /// Retrieve and return the TEFeatureLockable from the given position.
         /// </summary>
-        /// <param name="pos">The position to retrieve a TileEntitySign from (this must be the parent position of a multi-dim block).</param>
-        /// <returns>The TileEntitySign retrieved from the given position.</returns>
-        private static TileEntitySign GetTileEntitySignAt(Vector3i pos)
+        /// <param name="pos">The position to retrieve a TEFeatureLockable from (this must be the parent position of a multi-dim block).</param>
+        /// <returns>The TEFeatureLockable retrieved from the given position.</returns>
+        private static TEFeatureLockable GetLockableTileEntityAt(Vector3i pos)
         {
-            return GameManager.Instance.World.GetTileEntity(GameManager.Instance.World.ChunkCache.ClusterIdx, pos) as TileEntitySign;
+            return GameManager.Instance.World.GetTileEntity(GameManager.Instance.World.ChunkCache.ClusterIdx, pos) is TileEntityComposite te
+                ? te.GetFeature<TEFeatureLockable>()
+                : null;
         }
 
         /// <summary>
