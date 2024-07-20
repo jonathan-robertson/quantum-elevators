@@ -1,6 +1,6 @@
 # Quantum Elevators
 
-[![🧪 Tested On](https://img.shields.io/badge/🧪%20Tested%20On-1.0%20b316-blue.svg)](https://7daystodie.com/) [![📦 Automated Release](https://github.com/jonathan-robertson/quantum-elevators/actions/workflows/release.yml/badge.svg)](https://github.com/jonathan-robertson/quantum-elevators/actions/workflows/release.yml)
+[![🧪 Tested On](https://img.shields.io/badge/🧪%20Tested%20On-1.0%20b326-blue.svg)](https://7daystodie.com/) [![📦 Automated Release](https://github.com/jonathan-robertson/quantum-elevators/actions/workflows/release.yml/badge.svg)](https://github.com/jonathan-robertson/quantum-elevators/actions/workflows/release.yml)
 
 ![quantum-elevators social image](https://raw.githubusercontent.com/jonathan-robertson/quantum-elevators/media/quantum-elevators-logo-social.jpg)
 
