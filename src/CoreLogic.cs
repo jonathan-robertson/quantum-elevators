@@ -58,20 +58,20 @@ namespace QuantumElevators
                 var crowdWasAtPanel = Push(destination);
 
                 var destinationCenter = destination.ToVector3CenterXZ();
-                _log.Debug($"about to warp entityPlayer to {destinationCenter}");
+                _log.Debug($"about to warp {player} to {destinationCenter}");
                 if (player is EntityPlayerLocal localPlayer)
                 {
                     player.CrouchingLocked = false; // auto unlock crouching for ease of use
                     _ = localPlayer.Buffs.AddBuff(BuffTriggerJumpName); // for visuals & sound-effects
                     localPlayer.TeleportToPosition(destinationCenter, true, localPlayer.rotation);
-                    _log.Debug($"after teleport, entityPlayer now at {player.position}");
+                    _log.Debug($"after teleport, {player} now at {player.position}");
                     player.Buffs.RemoveBuff(BuffCooldownName);
-                    _log.Debug($"after remove buff, entityPlayer now at {player.position}");
+                    _log.Debug($"after remove buff, {player} now at {player.position}");
                     return;
                 }
                 else if (TryGetClientInfo(player.entityId, out var clientInfo))
                 {
-                    _log.Debug($"planning to teleport {player} to {player.position} soon");
+                    _log.Debug($"planning to teleport {player} from {player.position} to to {destinationCenter} soon");
                     var buffStatus = player.Buffs.AddBuff(BuffTriggerJumpName); // for visuals & sound-effects
                     if (buffStatus != EntityBuffs.BuffStatus.Added)
                     {
@@ -165,10 +165,10 @@ namespace QuantumElevators
         /// <param name="destinationCenter">Vector3 representing the destination to warp to.</param>
         private static void WarpPlayer(ClientInfo clientInfo, EntityPlayer player, Vector3 destinationCenter)
         {
-            clientInfo.SendPackage(NetPackageManager.GetPackage<NetPackageTeleportPlayer>().Setup(destinationCenter, new Vector3(0, player.rotation.y % 360, 0), true));
-            _log.Debug($"after teleport, entityPlayer now at {player.position} {player.rotation}");
+            var rotation = new Vector3(0, player.rotation.y % 360, 0);
+            _log.Debug($"sending NetPackage to remote player {player} at {player.position}: teleport to {destinationCenter} w/ rotation {rotation}");
+            clientInfo.SendPackage(NetPackageManager.GetPackage<NetPackageTeleportPlayer>().Setup(destinationCenter, rotation, true));
             player.Buffs.RemoveBuff(BuffCooldownName);
-            _log.Debug($"after remove buff, entityPlayer now at {player.position} {player.rotation}");
         }
 
         /// <summary>

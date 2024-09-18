@@ -11,7 +11,7 @@ namespace QuantumElevators
         private static readonly string ModMaintainer = "@kanaverum";
         private static readonly string SupportLink = "https://discord.gg/hYa2sNHXya";
 
-        public static bool DebugMode { get; set; } = false;
+        public static bool DebugMode { get; set; } = true;
         public static bool IsServer { get; private set; } = false;
         internal static int SecureQuantumBlockId { get; set; } = 0;
         internal static int PortableQuantumBlockId { get; set; } = 0;
@@ -26,7 +26,7 @@ namespace QuantumElevators
             ModEvents.GameStartDone.RegisterHandler(OnGameStartDone);
         }
 
-        private const string DLL_VERSION = "3.0.2"; // TODO: always update this before each release
+        private const string DLL_VERSION = "3.0.3-debug"; // TODO: always update this before each release
         private void OnGameAwake()
         {
             try
