@@ -1,29 +1,12 @@
 # Quantum Elevators
 
-[![🧪 Tested On 7DTD 1.1 (b14)](https://img.shields.io/badge/🧪%20Tested%20On-7DTD%201.1%20(b14)-blue.svg)](https://7daystodie.com/) [![📦 Automated Release](https://github.com/jonathan-robertson/quantum-elevators/actions/workflows/release.yml/badge.svg)](https://github.com/jonathan-robertson/quantum-elevators/actions/workflows/release.yml)
+[![🧪 Tested On 7DTD 1.2 (b27)](https://img.shields.io/badge/🧪%20Tested%20On-7DTD%201.2%20(b27)-blue.svg)](https://7daystodie.com/) [![📦 Automated Release](https://github.com/jonathan-robertson/quantum-elevators/actions/workflows/release.yml/badge.svg)](https://github.com/jonathan-robertson/quantum-elevators/actions/workflows/release.yml)
 
 ![quantum-elevators social image](https://raw.githubusercontent.com/jonathan-robertson/quantum-elevators/media/quantum-elevators-logo-social.jpg)
 
-- [Quantum Elevators](#quantum-elevators)
-  - [Summary](#summary)
-    - [Support](#support)
-  - [Features](#features)
-    - [Portable Quantum Elevator panels](#portable-quantum-elevator-panels)
-    - [Secure Quantum Elevator panels](#secure-quantum-elevator-panels)
-    - [Admin Commands](#admin-commands)
-  - [Setup](#setup)
-    - [Environment / EAC / Hosting Requirements](#environment--eac--hosting-requirements)
-    - [Map Considerations for Installation or UnInstallation](#map-considerations-for-installation-or-uninstallation)
-    - [Windows PC (Single Player or Hosting P2P)](#windows-pc-single-player-or-hosting-p2p)
-      - [Critical Reminders](#critical-reminders)
-    - [Windows/Linux Installation (Server via FTP from Windows PC)](#windowslinux-installation-server-via-ftp-from-windows-pc)
-    - [Linux Server Installation (Server via SSH)](#linux-server-installation-server-via-ssh)
-    - [Troubleshooting / Common Issues](#troubleshooting--common-issues)
-  - [Special Thanks](#special-thanks)
-
 ## Summary
 
-7 Days to Die modlet: Add infinite distance, vertical-warp elevator panels.
+7 Days to Die mod: Add infinite distance, vertical-warp elevator panels.
 
 🔗 [Introductory video and demonstration of most features](https://youtu.be/fQPIQ9pdOrw)
 
@@ -66,10 +49,10 @@ When attempting to travel, panels you are not already authenticated with or do n
 > - `help * <partial or complete command name>`
 > - or get details about this (or any) command and its options by running `help <command>`
 
-primary | alternate | params | description
-:---: | :---: | :---: | ---
-quantumelevators | qe | `debug` | enable/disable debug logging for this mod (disabled by default)
-quantumelevators | qe | `push <x> <y> <z>` | recursively push entities 1 block at a time to make room; use float values from 'lp' command to let system calculate correct block coordinates for you
+|     primary      | alternate |       params       | description                                                                                                                                            |
+| :--------------: | :-------: | :----------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| quantumelevators |    qe     |      `debug`       | enable/disable debug logging for this mod (disabled by default)                                                                                        |
+| quantumelevators |    qe     | `push <x> <y> <z>` | recursively push entities 1 block at a time to make room; use float values from 'lp' command to let system calculate correct block coordinates for you |
 
 *Note that leaving debug mode on can have a negative impact on performance. It is therefore recommended to only turn it on while troubleshooting and then disable it afterwards.*
 
@@ -81,11 +64,11 @@ If you have trouble getting things working, you can reach out to me for support 
 
 ### Environment / EAC / Hosting Requirements
 
-Environment | Compatible | Does EAC Need to be Disabled? | Who needs to install?
---- | --- | --- | ---
-Dedicated Server | Yes | no | only server
-Peer-to-Peer Hosting | Yes | only on the host | only the host
-Single Player Game | Yes | Yes | self (of course)
+| Environment          | Compatible | Does EAC Need to be Disabled? | Who needs to install? |
+| -------------------- | ---------- | ----------------------------- | --------------------- |
+| Dedicated Server     | Yes        | no                            | only server           |
+| Peer-to-Peer Hosting | Yes        | only on the host              | only the host         |
+| Single Player Game   | Yes        | Yes                           | self (of course)      |
 
 > 🤔 If you aren't sure what some of this means, details steps are provided below to walk you through the setup process.
 
