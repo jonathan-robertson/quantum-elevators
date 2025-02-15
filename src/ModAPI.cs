@@ -26,7 +26,7 @@ namespace QuantumElevators
             ModEvents.GameStartDone.RegisterHandler(OnGameStartDone);
         }
 
-        private const string DLL_VERSION = "4.0.0"; // TODO: always update this before each release
+        private const string DLL_VERSION = "5.0.0"; // TODO: always update this before each release
         private void OnGameAwake()
         {
             try
