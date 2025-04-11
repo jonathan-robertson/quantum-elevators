@@ -26,12 +26,14 @@ namespace QuantumElevators
             ModEvents.GameStartDone.RegisterHandler(OnGameStartDone);
         }
 
-        private const string DLL_VERSION = "5.0.0"; // TODO: always update this before each release
+        private const string DLL_VERSION = "test-version";  // note: this is automatically updated to a version like 5.1.0
+        private const string BUILD_TARGET = "test-target";  // note: this is automatically updated to a build version like 1.3
+
         private void OnGameAwake()
         {
             try
             {
-                _log.Info($"Quantum Elevators DLL Version: {DLL_VERSION}");
+                _log.Info($"Quantum Elevators DLL Version {DLL_VERSION} build for 7DTD {BUILD_TARGET}");
             }
             catch (Exception e)
             {

@@ -1,9 +1,8 @@
 # Quantum Elevators
 
-[![🧪 Tested with 7DTD 1.3 (b9)](https://img.shields.io/badge/🧪%20Tested%20with-7DTD%201.3%20(b9)-blue.svg)](https://7daystodie.com/)
+[![🚀 Automatic Release](https://github.com/jonathan-robertson/quantum-elevators/actions/workflows/automatic-release.yml/badge.svg)](https://github.com/jonathan-robertson/quantum-elevators/actions/workflows/automatic-release.yml)
 [![✅ Dedicated Servers Supported ServerSide](https://img.shields.io/badge/✅%20Dedicated%20Servers-Supported%20Serverside-blue.svg)](https://7daystodie.com/)
 [![✅ Single Player and P2P Supported](https://img.shields.io/badge/✅%20Single%20Player%20and%20P2P-Supported-blue.svg)](https://7daystodie.com/)
-[![📦 Automated Release](https://github.com/jonathan-robertson/quantum-elevators/actions/workflows/release.yml/badge.svg)](https://github.com/jonathan-robertson/quantum-elevators/actions/workflows/release.yml)
 
 ![quantum-elevators social image](https://raw.githubusercontent.com/jonathan-robertson/quantum-elevators/media/quantum-elevators-logo-social.jpg)
 
