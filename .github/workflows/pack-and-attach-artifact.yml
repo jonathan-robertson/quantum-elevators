@@ -63,10 +63,10 @@ jobs:
           sed -i "s|<HintPath>..\\\\..\\\\..\\\\..\\\\..\\\\..\\\\Program Files (x86)\\\\Steam\\\\steamapps\\\\common\\\\7 Days to Die Dedicated Server|<HintPath>..\\\\7dtd-references\\\\${GAME_VERSION}|g" ${{ env.PROJECT_FOLDER }}/${{ github.event.repository.name }}.csproj
 
           # update build release version
-          sed -i "s|DLL_VERSION = \"test-version\"|DLL_VERSION = \"${{ env.version }}\"|g" ${{ env.PROJECT_FOLDER }}/ModAPI.cs
+          sed -i "s|DLL_VERSION = \"test-version\"|DLL_VERSION = \"${{ env.version }}\"|g" ${{ env.PROJECT_FOLDER }}/ModApi.cs
 
           # update build target version
-          sed -i "s|BUILD_TARGET = \"test-target\"|BUILD_TARGET = \"$GAME_VERSION\"|g" ${{ env.PROJECT_FOLDER }}/ModAPI.cs
+          sed -i "s|BUILD_TARGET = \"test-target\"|BUILD_TARGET = \"$GAME_VERSION\"|g" ${{ env.PROJECT_FOLDER }}/ModApi.cs
 
 
           echo "${{ env.PROJECT_FOLDER }}/${{ github.event.repository.name }}.csproj references were modified to the following:"
