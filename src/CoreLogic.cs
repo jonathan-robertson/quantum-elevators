@@ -46,9 +46,10 @@ namespace QuantumElevators
             _ = player.Buffs.AddBuff(BuffCooldownName);
 
             var userIdentifier = GameManager.Instance.persistentPlayers.GetPlayerDataFromEntityID(player.entityId).PrimaryId;
+            Vector3i destination = default; // note: do not inline this; mono/msbuild in linux pipeline returns error if we do: error CS0165: Use of unassigned local variable 'destination'
             if (CanAccess(player, userIdentifier, sourceBlockPos, sourceBlockValue, out var sourceTileEntity)
                 && (direction == Direction.Up
-                    ? !player.Buffs.HasBuff(BuffAtTopFloorName) && TryGetFloorAbove(userIdentifier, sourceBlockPos, sourceBlockValue, sourceTileEntity, out var destination)
+                    ? !player.Buffs.HasBuff(BuffAtTopFloorName) && TryGetFloorAbove(userIdentifier, sourceBlockPos, sourceBlockValue, sourceTileEntity, out destination)
                     : !player.Buffs.HasBuff(BuffAtBottomFloorName) && TryGetFloorBelow(userIdentifier, sourceBlockPos, sourceTileEntity, out destination)))
             {
                 // clear above/below locks early
