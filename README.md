@@ -6,6 +6,26 @@
 
 ![quantum-elevators social image](https://raw.githubusercontent.com/jonathan-robertson/quantum-elevators/media/quantum-elevators-logo-social.jpg)
 
+<details><summary>Table of Contents</summary>
+
+- [Summary](#summary)
+  - [Support](#support)
+- [Features](#features)
+  - [Portable Quantum Elevator panels](#portable-quantum-elevator-panels)
+  - [Secure Quantum Elevator panels](#secure-quantum-elevator-panels)
+  - [Admin Commands](#admin-commands)
+- [Setup](#setup)
+  - [Environment / EAC / Hosting Requirements](#environment--eac--hosting-requirements)
+  - [Map Considerations for Installation or UnInstallation](#map-considerations-for-installation-or-uninstallation)
+  - [Windows PC (Single Player or Hosting P2P)](#windows-pc-single-player-or-hosting-p2p)
+    - [Critical Reminders](#critical-reminders)
+  - [Windows/Linux Installation (Server via FTP from Windows PC)](#windowslinux-installation-server-via-ftp-from-windows-pc)
+  - [Linux Server Installation (Server via SSH)](#linux-server-installation-server-via-ssh)
+  - [Troubleshooting / Common Issues](#troubleshooting--common-issues)
+- [Special Thanks](#special-thanks)
+
+</details>
+
 ## Summary
 
 7 Days to Die mod: Add infinite distance, vertical-warp elevator panels.
